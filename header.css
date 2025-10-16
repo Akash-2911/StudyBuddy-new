@@ -19,6 +19,7 @@
 .nav__link:hover { background:#f1f5f9; }
 .nav__link.is-active { color:#0f172a; background:#eef2ff; }
 
+
 .actions { display:flex; justify-content:flex-end; align-items:center; gap:12px; }
 .pill { background:#FDE68A; color:#111827; padding:8px 12px; border-radius:999px; font-weight:600; }
 .avatar { width:32px; height:32px; border-radius:50%; background:#e2e8f0; display:inline-block; border:1px solid #cbd5e1; }
