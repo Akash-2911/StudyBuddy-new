@@ -214,3 +214,50 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "store") initStore();
 });
 
+// ---------------- LEADERBOARD PAGE ----------------
+function initLeaderboard() {
+  // Refresh header balance
+  const s = sb_all();
+  const sbPill = document.getElementById("sb-balance");
+  if (sbPill) sbPill.textContent = `${s.user.studyBucks} SB`;
+
+  const { list } = sb_leaderboardData();
+  const listEl = document.getElementById("lbList");
+  listEl.innerHTML = "";
+
+  list.forEach(u => {
+    const row = document.createElement("div");
+    const you = u.id === "me";
+    row.className = "lb-row" + (you ? " lb-row--you" : "");
+
+    // Rank medal classes
+    let rankClass = "";
+    if (u.rank === 1) rankClass = "gold";
+    else if (u.rank === 2) rankClass = "silver";
+    else if (u.rank === 3) rankClass = "bronze";
+
+    // Avatar initials
+    const initials = u.name.split(" ").map(x => x[0]).join("").slice(0,2).toUpperCase();
+
+    row.innerHTML = `
+      <div><div class="rank ${rankClass}">${u.rank}</div></div>
+      <div class="person">
+        <div class="avatar">${initials}</div>
+        <div>
+          <div class="name">${u.name}</div>
+          ${you ? '<span class="subtle">Current user</span>' : ''}
+        </div>
+      </div>
+      <div class="right sb">${u.studyBucks}</div>
+      <div class="right xp">${u.xp}</div>
+    `;
+    listEl.appendChild(row);
+  });
+}
+
+// Extend existing DOMContentLoaded handler to include leaderboard
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.documentElement.getAttribute("data-page");
+  if (page === "leaderboard") initLeaderboard();
+});
+
