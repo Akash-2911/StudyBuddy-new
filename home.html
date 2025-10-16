@@ -13,6 +13,30 @@
   <!-- Shared Header -->
   <div id="header-container"></div>
 
+  <!-- Add Course Modal -->
+<div id="addCourseModal" class="modal hidden">
+  <div class="modal__overlay"></div>
+  <div class="modal__box">
+    <h3>Add a New Course</h3>
+    <p class="muted">Fill in the details below to add a new course.</p>
+
+    <label>Course Code</label>
+    <input type="text" id="courseCode" placeholder="e.g., CS 101">
+
+    <label>Course Title</label>
+    <input type="text" id="courseTitle" placeholder="e.g., Introduction to Programming">
+
+    <label>Instructor</label>
+    <input type="text" id="courseInstructor" placeholder="e.g., Dr. Sarah Chen">
+
+    <div class="modal__actions">
+      <button class="btn green" id="saveCourse">Add Course</button>
+      <button class="btn outline" id="cancelCourse">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
   <main class="container">
     <!-- Welcome + Stat Cards -->
     <section class="welcome">
