@@ -98,19 +98,40 @@ function courseCard(c) {
 }
 
 function addCourseFlow() {
-  const code = prompt("Enter course code (e.g., CS 101):");
-  if (!code) return;
-  const title = prompt("Enter course title:");
-  if (!title) return;
-  const instructor = prompt("Enter instructor name:");
-  const course = {
-    id: crypto.randomUUID(),
-    code,
-    title,
-    instructor: instructor || "Instructor",
-    progress: Math.floor(Math.random()*20)+10
-  };
-  sb_addCourse(course);
-  // re-render
-  initHome();
+  const modal = document.getElementById("addCourseModal");
+  modal.classList.remove("hidden");
+
+  const saveBtn = document.getElementById("saveCourse");
+  const cancelBtn = document.getElementById("cancelCourse");
+  const overlay = modal.querySelector(".modal__overlay");
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    saveBtn.removeEventListener("click", handleSave);
+    cancelBtn.removeEventListener("click", closeModal);
+    overlay.removeEventListener("click", closeModal);
+  }
+
+  function handleSave() {
+    const code = document.getElementById("courseCode").value.trim();
+    const title = document.getElementById("courseTitle").value.trim();
+    const instructor = document.getElementById("courseInstructor").value.trim();
+    if (!code || !title) return alert("Please enter both Course Code and Title.");
+
+    const course = {
+      id: crypto.randomUUID(),
+      code,
+      title,
+      instructor: instructor || "Instructor",
+      progress: Math.floor(Math.random() * 20) + 10
+    };
+
+    sb_addCourse(course);
+    closeModal();
+    initHome(); // refresh
+  }
+
+  saveBtn.addEventListener("click", handleSave);
+  cancelBtn.addEventListener("click", closeModal);
+  overlay.addEventListener("click", closeModal);
 }
