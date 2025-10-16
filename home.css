@@ -61,3 +61,66 @@ body { background:#F6F9FC; color:#0f172a; }
   .stats, .courses, .grid3 { grid-template-columns: 1fr; }
   .container { padding-top:16px; }
 }
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.4);
+  z-index: 100;
+}
+.modal.hidden { display: none; }
+
+.modal__overlay {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(3px);
+}
+
+.modal__box {
+  position: relative;
+  background: #fff;
+  padding: 28px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  animation: pop 0.25s ease;
+  z-index: 101;
+}
+@keyframes pop {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modal__box h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.modal__box input {
+  width: 100%;
+  margin: 6px 0 12px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal__box input:focus {
+  border-color: #2563EB;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
