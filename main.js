@@ -135,3 +135,82 @@ function addCourseFlow() {
   cancelBtn.addEventListener("click", closeModal);
   overlay.addEventListener("click", closeModal);
 }
+
+// ---------------- STORE PAGE ----------------
+function initStore() {
+  const state = sb_all();
+  const grid = document.getElementById("storeGrid");
+  const balanceEl = document.getElementById("sbBalance");
+  balanceEl.textContent = `${state.user.studyBucks} SB`;
+
+  const items = sb_storeItems();
+  grid.innerHTML = "";
+  items.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    const affordable = state.user.studyBucks >= item.cost;
+    card.innerHTML = `
+      <div>
+        <div class="item-title">${item.name}</div>
+        <div class="item-type">${item.type}</div>
+        <div class="item-cost">${item.cost} SB</div>
+      </div>
+      <button class="btn redeem ${!affordable ? "disabled" : ""}" data-id="${item.id}">
+        ${affordable ? "Redeem" : "Not enough SB"}
+      </button>
+    `;
+    grid.appendChild(card);
+  });
+
+  // redeem button actions
+  grid.querySelectorAll(".btn.redeem").forEach(btn => {
+    btn.addEventListener("click", e => {
+      const id = e.target.dataset.id;
+      const item = sb_storeItems().find(i => i.id === id);
+      if (!item || e.target.classList.contains("disabled")) return;
+
+      openRedeemModal(item);
+    });
+  });
+}
+
+// MODAL CONTROL
+function openRedeemModal(item) {
+  const modal = document.getElementById("redeemModal");
+  const text = document.getElementById("redeemText");
+  const confirm = document.getElementById("confirmRedeem");
+  const cancel = document.getElementById("cancelRedeem");
+  const overlay = modal.querySelector(".modal__overlay");
+
+  text.textContent = `Redeem "${item.name}" for ${item.cost} StudyBucks?`;
+  modal.classList.remove("hidden");
+
+  function close() {
+    modal.classList.add("hidden");
+    confirm.removeEventListener("click", redeemNow);
+    cancel.removeEventListener("click", close);
+    overlay.removeEventListener("click", close);
+  }
+
+  function redeemNow() {
+    const res = sb_redeem(item.id);
+    alert(res.message);
+    close();
+    initStore(); // refresh
+    // also refresh balance in header
+    const s2 = sb_all();
+    const sb = document.getElementById("sb-balance");
+    if (sb) sb.textContent = `${s2.user.studyBucks} SB`;
+  }
+
+  confirm.addEventListener("click", redeemNow);
+  cancel.addEventListener("click", close);
+  overlay.addEventListener("click", close);
+}
+
+// Attach initStore automatically
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.documentElement.getAttribute("data-page");
+  if (page === "store") initStore();
+});
+
