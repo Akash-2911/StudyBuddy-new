@@ -153,3 +153,61 @@ function sb_redeem(itemId) {
   return { ok:true, message:`You redeemed "${item.name}" for ${item.cost} SB! 🎉` };
 }
 
+// ---------- LEADERBOARD MOCK ----------
+const SB_LB_KEY = "sb_leaderboard_competitors_v1";
+
+function sb_lbEnsureCompetitors() {
+  const raw = localStorage.getItem(SB_LB_KEY);
+  if (raw) return JSON.parse(raw);
+
+  // Generate 10 mock peers
+  const names = [
+    "Ava Patel","Liam Wong","Mia Chen","Noah Singh","Emma Thompson",
+    "Lucas Martin","Olivia Brown","Ethan Davis","Isabella Garcia","Mason Lee"
+  ];
+  const peers = names.map(n => {
+    const xp = Math.floor(Math.random()*1200) + 200;       // 200–1400
+    const sb = Math.floor(Math.random()*220) + 60;         // 60–280
+    return {
+      id: crypto.randomUUID(),
+      name: n,
+      studyBucks: sb,
+      xp: xp
+    };
+  });
+  localStorage.setItem(SB_LB_KEY, JSON.stringify(peers));
+  return peers;
+}
+
+// Build leaderboard array including current user, then sort:
+// Primary: studyBucks desc, Secondary: xp desc
+function sb_leaderboardData() {
+  const state = sb_all();
+  const peers = sb_lbEnsureCompetitors();
+
+  const me = {
+    id: "me",
+    name: state.user.name || "Student",
+    studyBucks: state.user.studyBucks,
+    xp: state.user.xp
+  };
+
+  // Merge (ensure we don’t duplicate "me" if called multiple times)
+  const merged = [me, ...peers.filter(p => p.id !== "me")];
+
+  // Sort by SB desc, then XP desc
+  merged.sort((a,b) => {
+    if (b.studyBucks !== a.studyBucks) return b.studyBucks - a.studyBucks;
+    return b.xp - a.xp;
+  });
+
+  // Assign ranks + find my rank
+  let myRank = null;
+  merged.forEach((u, i) => {
+    u.rank = i + 1;
+    if (u.id === "me") myRank = u.rank;
+  });
+
+  return { list: merged, myRank };
+}
+
