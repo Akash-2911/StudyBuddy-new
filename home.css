@@ -4,6 +4,7 @@ body { background:#F6F9FC; color:#0f172a; }
 /* container */
 .container { max-width:1100px; margin:0 auto; padding:24px 16px 60px; }
 
+
 /* sections */
 .welcome h1 { font-family:'Montserrat',sans-serif; font-weight:600; letter-spacing:.2px; }
 .wave { display:inline-block; transform-origin:70% 70%; animation: wave 2.5s infinite; }
