@@ -216,27 +216,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ---------------- LEADERBOARD PAGE ----------------
 function initLeaderboard() {
-  // Refresh header balance
-  const s = sb_all();
-  const sbPill = document.getElementById("sb-balance");
-  if (sbPill) sbPill.textContent = `${s.user.studyBucks} SB`;
-
   const { list } = sb_leaderboardData();
   const listEl = document.getElementById("lbList");
   listEl.innerHTML = "";
 
   list.forEach(u => {
-    const row = document.createElement("div");
     const you = u.id === "me";
+    const row = document.createElement("div");
     row.className = "lb-row" + (you ? " lb-row--you" : "");
 
-    // Rank medal classes
     let rankClass = "";
     if (u.rank === 1) rankClass = "gold";
     else if (u.rank === 2) rankClass = "silver";
     else if (u.rank === 3) rankClass = "bronze";
 
-    // Avatar initials
     const initials = u.name.split(" ").map(x => x[0]).join("").slice(0,2).toUpperCase();
 
     row.innerHTML = `
@@ -248,8 +241,7 @@ function initLeaderboard() {
           ${you ? '<span class="subtle">Current user</span>' : ''}
         </div>
       </div>
-      <div class="right sb">${u.studyBucks}</div>
-      <div class="right xp">${u.xp}</div>
+      <div class="right">${u.xp}</div>
     `;
     listEl.appendChild(row);
   });
