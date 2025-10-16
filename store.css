@@ -1,1 +1,84 @@
+body { background:#F6F9FC; color:#0f172a; font-family:system-ui, sans-serif; }
 
+.container { max-width:1100px; margin:0 auto; padding:24px 16px 60px; }
+
+.store-header h1 { margin-bottom:6px; font-weight:600; }
+.balance-box {
+  margin-top:12px;
+  display:inline-flex;
+  align-items:center;
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:999px;
+  padding:8px 14px;
+  font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,0.05);
+}
+.balance-label { color:#64748b; margin-right:6px; }
+
+.store-grid {
+  margin-top:28px;
+  display:grid;
+  gap:20px;
+  grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+}
+
+.card {
+  background:#fff;
+  border-radius:16px;
+  border:1px solid #e5e7eb;
+  padding:20px;
+  box-shadow:0 6px 24px rgba(0,0,0,0.04);
+  transition:transform .2s ease, box-shadow .2s ease;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.card:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.06); }
+
+.item-title { font-weight:600; margin:6px 0; }
+.item-type { font-size:13px; color:#6b7280; }
+.item-cost { font-weight:600; color:#4CAF50; margin:10px 0; }
+
+.btn.redeem { background:#4CAF50; color:white; font-weight:600; }
+.btn.redeem.disabled { background:#cbd5e1; cursor:not-allowed; }
+
+.muted { color:#94a3b8; font-size:14px; }
+
+/* Reuse modal styling */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.4);
+  z-index: 100;
+}
+.modal.hidden { display: none; }
+.modal__overlay {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(3px);
+}
+.modal__box {
+  position: relative;
+  background: #fff;
+  padding: 28px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  animation: pop 0.25s ease;
+  z-index: 101;
+}
+.modal__actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:16px;
+}
+@keyframes pop {
+  0% { transform:scale(0.9); opacity:0; }
+  100% { transform:scale(1); opacity:1; }
+}
