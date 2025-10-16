@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-page="leaderboard">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyBuddy • Leaderboard</title>
+  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="header.css">
+  <link rel="stylesheet" href="leaderboard.css">
+</head>
+<body>
+  <!-- Shared Header -->
+  <div id="header-container"></div>
+
+  <main class="container">
+    <section class="lb-head">
+      <h1>Top Learners of the Week</h1>
+      <p class="muted">Ranked by StudyBucks with XP as a tiebreaker.</p>
+    </section>
+
+    <section class="lb-wrap">
+      <div class="lb-row lb-row--head">
+        <div>#</div>
+        <div>Student</div>
+        <div class="right">StudyBucks</div>
+        <div class="right">XP</div>
+      </div>
+      <div id="lbList"></div>
+    </section>
+  </main>
+
+  <!-- Shared Footer -->
+  <div id="footer-container"></div>
+
+  <script src="mockdata.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
