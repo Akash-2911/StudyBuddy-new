@@ -123,3 +123,33 @@ function sb_all() {
   sb_recalcStreak(s);
   return s;
 }
+
+// ---------- STORE MOCK DATA ----------
+const SB_STORE_ITEMS = [
+  { id: "course_1", name: "Advanced Python Course", type: "Course", cost: 60 },
+  { id: "course_2", name: "UI/UX Design Masterclass", type: "Course", cost: 80 },
+  { id: "sub_1", name: "1-Month Premium Subscription", type: "Subscription", cost: 50 },
+  { id: "sub_2", name: "6-Month Premium Subscription", type: "Subscription", cost: 200 },
+  { id: "merch_1", name: "StudyBuddy Notebook", type: "Merchandise", cost: 30 },
+  { id: "merch_2", name: "Coffee Mug", type: "Merchandise", cost: 25 }
+];
+
+function sb_storeItems() {
+  return SB_STORE_ITEMS;
+}
+
+function sb_redeem(itemId) {
+  const s = sb_load();
+  const item = SB_STORE_ITEMS.find(i => i.id === itemId);
+  if (!item) return { ok:false, message:"Item not found." };
+
+  if (s.user.studyBucks < item.cost) {
+    return { ok:false, message:"Not enough StudyBucks to redeem this item." };
+  }
+
+  s.user.studyBucks -= item.cost;
+  sb_addXP(20); // small XP reward
+  sb_save(s);
+  return { ok:true, message:`You redeemed "${item.name}" for ${item.cost} SB! 🎉` };
+}
+
