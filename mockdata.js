@@ -116,6 +116,7 @@ function sb_addCourse(course) {
   sb_save(s);
 }
 
+
 function sb_all() {
   const s = sb_load();
   // ensure streak refresh on each load
