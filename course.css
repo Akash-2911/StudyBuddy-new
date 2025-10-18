@@ -1,1 +1,95 @@
+body { background:#F6F9FC; color:#0f172a; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+.container { max-width:1100px; margin:0 auto; padding:24px 16px 60px; }
 
+.page-header h1 { margin-bottom:8px; font-weight:700; }
+.page-header p { margin-bottom:16px; color:#64748b; }
+
+.grid {
+  display:grid;
+  gap:20px;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  margin-top:16px;
+}
+
+.card {
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 6px 24px rgba(0,0,0,0.04);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:all .25s ease;
+}
+.card:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,0.06); }
+
+.course-code {
+  display:inline-block;
+  background:#ecfdf5;
+  color:#047857;
+  border:1px solid #bbf7d0;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:10px;
+}
+.course-title { font-weight:700; margin-bottom:4px; }
+.course-instructor { color:#64748b; font-size:14px; margin-bottom:10px; }
+
+.progress { background:#e2e8f0; height:8px; border-radius:999px; overflow:hidden; margin-bottom:12px; }
+.progress__bar { height:100%; background:#4CAF50; width:0%; border-radius:999px; transition:width .6s ease; }
+
+.status {
+  font-size:12px;
+  font-weight:600;
+  border-radius:8px;
+  padding:4px 8px;
+  display:inline-block;
+  margin-bottom:10px;
+}
+.status.active { background:#dcfce7; color:#166534; border:1px solid #86efac; }
+.status.requested { background:#fef9c3; color:#854d0e; border:1px solid #facc15; }
+
+.actions-row { display:flex; gap:10px; margin-top:10px; }
+.empty { text-align:center; padding:40px 16px; }
+.empty__icon { font-size:32px; margin-bottom:6px; }
+.empty__title { font-weight:700; }
+.hidden { display:none !important; }
+
+/* Discover Section */
+#discoverSection h2 { margin-top:40px; }
+.discover-card { opacity:.95; }
+.discover-card:hover { opacity:1; }
+
+/* Modal Reuse */
+.modal {
+  position:fixed; inset:0;
+  display:flex; justify-content:center; align-items:center;
+  background:rgba(15,23,42,0.4);
+  z-index:100;
+}
+.modal.hidden { display:none; }
+.modal__overlay { position:absolute; inset:0; backdrop-filter:blur(3px); }
+.modal__box {
+  position:relative;
+  background:#fff;
+  padding:28px;
+  border-radius:18px;
+  width:90%; max-width:400px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.1);
+  animation:pop .25s ease;
+  z-index:101;
+}
+.modal__box input {
+  width:100%; margin:6px 0 12px;
+  padding:10px; border-radius:10px;
+  border:1px solid #d1d5db; font-size:1rem;
+}
+.modal__actions { display:flex; justify-content:flex-end; gap:10px; }
+@keyframes pop { 0%{transform:scale(.9);opacity:0;} 100%{transform:scale(1);opacity:1;} }
+
+@media(max-width:600px){
+  .grid { grid-template-columns:1fr; }
+}
