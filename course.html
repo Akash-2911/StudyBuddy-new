@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-page="courses">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyBuddy • Courses</title>
+  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="header.css">
+  <link rel="stylesheet" href="course.css">
+</head>
+<body>
+  <!-- Shared Header -->
+  <div id="header-container"></div>
 
+  <main class="container">
+    <!-- Header -->
+    <section class="page-header">
+      <h1>Your Courses</h1>
+      <p class="muted">View, manage, or request access to new courses.</p>
+      <button class="btn green" id="addCourseBtn">+ Add Course</button>
+    </section>
+
+    <!-- Your Courses -->
+    <section id="yourCoursesSection">
+      <h2>Enrolled Courses</h2>
+      <div id="yourCourses" class="grid"></div>
+      <div id="emptyCourses" class="empty hidden">
+        <div class="empty__icon">📘</div>
+        <div class="empty__title">No courses yet</div>
+        <p class="muted">Start by adding or requesting your first course.</p>
+        <button class="btn green" id="createFirstCourse">+ Add Course</button>
+      </div>
+    </section>
+
+    <!-- Discover New -->
+    <section id="discoverSection">
+      <h2>Discover New Courses</h2>
+      <p class="muted">Explore popular subjects and request access instantly.</p>
+      <div id="discoverGrid" class="grid"></div>
+    </section>
+  </main>
+
+  <!-- Add Course Modal (reused) -->
+  <div id="addCourseModal" class="modal hidden">
+    <div class="modal__overlay"></div>
+    <div class="modal__box">
+      <h3>Add a New Course</h3>
+      <p class="muted">Enter course details below.</p>
+
+      <label>Course Code</label>
+      <input type="text" id="courseCode" placeholder="e.g., CS 101">
+      <label>Course Title</label>
+      <input type="text" id="courseTitle" placeholder="e.g., Introduction to Programming">
+      <label>Instructor</label>
+      <input type="text" id="courseInstructor" placeholder="e.g., Dr. Sarah Chen">
+
+      <div class="modal__actions">
+        <button class="btn green" id="saveCourse">Add Course</button>
+        <button class="btn outline" id="cancelCourse">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Footer -->
+  <div id="footer-container"></div>
+
+  <script src="mockdata.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
