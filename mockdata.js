@@ -192,3 +192,33 @@ function sb_leaderboardData() {
 
   return { list: merged };
 }
+
+// ---------- DISCOVER COURSES MOCK ----------
+const SB_DISCOVER = [
+  { id: "ml01", code: "ML 101", title: "Machine Learning Basics", instructor: "Dr. Kate Li", desc: "Learn foundational AI concepts and models." },
+  { id: "ps01", code: "PS 201", title: "Public Speaking Skills", instructor: "Prof. Amir Khan", desc: "Boost confidence and presentation skills." },
+  { id: "ai01", code: "AI 205", title: "AI for Everyone", instructor: "Dr. Lisa Moore", desc: "Understand AI's impact on modern life." }
+];
+
+function sb_discoverCourses() {
+  return SB_DISCOVER;
+}
+
+function sb_requestCourse(id) {
+  const s = sb_load();
+  const found = SB_DISCOVER.find(c => c.id === id);
+  if (!found) return false;
+  if (s.courses.some(c => c.id === id)) return false;
+
+  const newCourse = {
+    id: found.id,
+    code: found.code,
+    title: found.title,
+    instructor: found.instructor,
+    progress: 0,
+    status: "requested"
+  };
+  s.courses.push(newCourse);
+  sb_save(s);
+  return true;
+}
