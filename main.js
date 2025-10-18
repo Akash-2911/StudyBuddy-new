@@ -253,3 +253,108 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "leaderboard") initLeaderboard();
 });
 
+// ---------------- COURSES PAGE ----------------
+function initCourses() {
+  const s = sb_all();
+  const grid = document.getElementById("yourCourses");
+  const empty = document.getElementById("emptyCourses");
+  const discoverGrid = document.getElementById("discoverGrid");
+
+  // Render user's courses
+  grid.innerHTML = "";
+  if (!s.courses.length) {
+    empty.classList.remove("hidden");
+  } else {
+    empty.classList.add("hidden");
+    s.courses.forEach(c => grid.appendChild(courseCardFull(c)));
+  }
+
+  // Discover section
+  discoverGrid.innerHTML = "";
+  sb_discoverCourses().forEach(c => {
+    const card = document.createElement("div");
+    card.className = "card discover-card";
+    card.innerHTML = `
+      <div class="course-code">${c.code}</div>
+      <div class="course-title">${c.title}</div>
+      <p class="muted">${c.desc}</p>
+      <button class="btn blue" data-id="${c.id}">Request Access</button>
+    `;
+    discoverGrid.appendChild(card);
+  });
+
+  discoverGrid.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", e => {
+      const id = e.target.dataset.id;
+      if (sb_requestCourse(id)) {
+        alert("Course request sent successfully ✅");
+        initCourses();
+      } else {
+        alert("Already requested or added.");
+      }
+    });
+  });
+
+  // Buttons
+  document.getElementById("addCourseBtn").onclick = openCourseModal;
+  document.getElementById("createFirstCourse").onclick = openCourseModal;
+}
+
+function courseCardFull(c) {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <div class="course-code">${c.code}</div>
+    <div class="course-title">${c.title}</div>
+    <div class="course-instructor">${c.instructor}</div>
+    <div class="progress"><div class="progress__bar" style="width:${Math.min(100, c.progress)}%"></div></div>
+    <span class="status ${c.status || "active"}">${(c.status || "active").toUpperCase()}</span>
+    <div class="actions-row">
+      <button class="btn green">Summary</button>
+      <button class="btn outline">View</button>
+    </div>
+  `;
+  return card;
+}
+
+// Modal open/close reuse
+function openCourseModal() {
+  const modal = document.getElementById("addCourseModal");
+  modal.classList.remove("hidden");
+  const save = document.getElementById("saveCourse");
+  const cancel = document.getElementById("cancelCourse");
+  const overlay = modal.querySelector(".modal__overlay");
+
+  function close() {
+    modal.classList.add("hidden");
+    save.removeEventListener("click", saveCourse);
+    cancel.removeEventListener("click", close);
+    overlay.removeEventListener("click", close);
+  }
+
+  function saveCourse() {
+    const code = document.getElementById("courseCode").value.trim();
+    const title = document.getElementById("courseTitle").value.trim();
+    const instructor = document.getElementById("courseInstructor").value.trim();
+    if (!code || !title) return alert("Please enter course code and title.");
+    const course = {
+      id: crypto.randomUUID(),
+      code, title, instructor: instructor || "Instructor",
+      progress: 0, status: "active"
+    };
+    sb_addCourse(course);
+    close();
+    initCourses();
+  }
+
+  save.addEventListener("click", saveCourse);
+  cancel.addEventListener("click", close);
+  overlay.addEventListener("click", close);
+}
+
+// Auto init
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.documentElement.getAttribute("data-page");
+  if (page === "courses") initCourses();
+});
+
