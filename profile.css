@@ -10,8 +10,17 @@ body {
   padding:24px 16px 60px;
 }
 
-.page-header h1 { margin-bottom:6px; font-weight:700; }
+.page-header h1 {
+  margin-bottom:6px;
+  font-weight:700;
+}
 
+.muted {
+  color:#64748b;
+  font-size:14px;
+}
+
+/* --- Profile Card --- */
 .profile-card {
   background:#fff;
   border-radius:20px;
@@ -20,17 +29,33 @@ body {
   text-align:center;
   padding:30px 20px;
   margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.profile-top {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  margin-bottom:15px;
 }
 
 .avatar {
-  width:90px; height:90px;
+  width:90px;
+  height:90px;
   border-radius:50%;
   background:#4CAF50;
   color:#fff;
   font-size:36px;
   font-weight:700;
-  display:flex; justify-content:center; align-items:center;
-  margin:0 auto 12px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-shrink:0;
+  box-shadow:0 0 10px rgba(76,175,80,0.2);
 }
 
 .user-info {
@@ -38,25 +63,29 @@ body {
   justify-content:center;
   align-items:center;
   gap:10px;
+  flex-wrap:wrap;
 }
 
 #userName {
   border:none;
   background:none;
-  font-size:20px;
+  font-size:22px;
   font-weight:700;
   text-align:center;
   outline:none;
-  width:auto;
   color:#111827;
+  width:auto;
 }
-#userName[readonly] { cursor:default; }
+#userName[readonly] {
+  cursor:default;
+}
 
+/* --- Stats --- */
 .stats {
   display:grid;
   grid-template-columns: repeat(4,1fr);
   gap:10px;
-  margin-top:20px;
+  margin-top:15px;
   font-size:15px;
 }
 .stats div {
@@ -70,12 +99,15 @@ body {
   color:#64748b;
 }
 
+/* XP Progress Bar */
 .progress {
   background:#e2e8f0;
   height:10px;
   border-radius:999px;
   overflow:hidden;
   margin-top:20px;
+  width:100%;
+  max-width:500px;
 }
 .progress__bar {
   background:#4CAF50;
@@ -85,9 +117,14 @@ body {
   border-radius:999px;
 }
 
-/* Achievements */
-.achievements { margin-top:40px; }
-.achievements h2 { margin-bottom:10px; font-weight:700; }
+/* --- Achievements --- */
+.achievements {
+  margin-top:40px;
+}
+.achievements h2 {
+  margin-bottom:10px;
+  font-weight:700;
+}
 .badge-grid {
   display:grid;
   gap:18px;
@@ -100,15 +137,40 @@ body {
   padding:16px 10px;
   text-align:center;
   box-shadow:0 6px 24px rgba(0,0,0,0.04);
-  transition:transform .2s ease;
+  transition:transform .2s ease, box-shadow .2s ease;
 }
-.badge:hover { transform:translateY(-3px); }
-.badge.locked { opacity:0.5; }
-.badge span { font-size:28px; display:block; margin-bottom:6px; }
-.badge h4 { margin:4px 0 2px; font-weight:700; font-size:15px; }
-.badge p { font-size:13px; color:#64748b; }
+.badge:hover {
+  transform:translateY(-3px);
+}
+.badge.locked {
+  opacity:0.5;
+}
+.badge.active {
+  box-shadow:0 0 10px rgba(76,175,80,0.25);
+  border-color:#4CAF50;
+  transform:scale(1.03);
+}
+.badge span {
+  font-size:28px;
+  display:block;
+  margin-bottom:6px;
+}
+.badge h4 {
+  margin:4px 0 2px;
+  font-weight:700;
+  font-size:15px;
+}
+.badge p {
+  font-size:13px;
+  color:#64748b;
+}
 
 /* Responsive */
 @media(max-width:600px){
-  .stats { grid-template-columns: repeat(2,1fr); }
+  .stats {
+    grid-template-columns: repeat(2,1fr);
+  }
+  .progress {
+    max-width:90%;
+  }
 }
