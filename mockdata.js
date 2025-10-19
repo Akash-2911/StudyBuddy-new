@@ -222,3 +222,39 @@ function sb_requestCourse(id) {
   sb_save(s);
   return true;
 }
+
+// ---------- PROFILE FUNCTIONS ----------
+function sb_updateName(newName) {
+  const s = sb_load();
+  s.user.name = newName;
+  sb_save(s);
+  return s.user.name;
+}
+
+function sb_badges() {
+  const s = sb_all();
+  const badges = [
+    {
+      id:"quizmaster", name:"Quiz Master", icon:"🧠",
+      desc:"Completed 50 quizzes", unlocked: s.user.quizzes >= 50
+    },
+    {
+      id:"dailychamp", name:"Daily Champ", icon:"🔥",
+      desc:"7-day login streak", unlocked: s.user.streak >= 7
+    },
+    {
+      id:"knowledgeseeker", name:"Knowledge Seeker", icon:"📘",
+      desc:"Reached 1000 XP", unlocked: s.user.xp >= 1000
+    },
+    {
+      id:"consistencystar", name:"Consistency Star", icon:"⭐",
+      desc:"15-day streak", unlocked: s.user.streak >= 15
+    },
+    {
+      id:"brainiac", name:"Brainiac", icon:"🏆",
+      desc:"Achieved Level 5+", unlocked: s.user.level >= 5
+    }
+  ];
+  return badges;
+}
+
