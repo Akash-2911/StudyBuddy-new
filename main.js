@@ -358,3 +358,64 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "courses") initCourses();
 });
 
+// ---------------- PROFILE PAGE ----------------
+function initProfile() {
+  const s = sb_all();
+
+  // Avatar initials
+  const avatar = document.getElementById("profileAvatar");
+  const initials = (s.user.name || "Student").split(" ").map(n=>n[0]).join("").toUpperCase().slice(0,2);
+  avatar.textContent = initials;
+
+  // Stats
+  document.getElementById("userName").value = s.user.name;
+  document.getElementById("profileLevel").textContent = s.user.level;
+  document.getElementById("profileXP").textContent = `${s.user.xp}/${s.user.xpMax}`;
+  document.getElementById("profileSB").textContent = s.user.studyBucks;
+  document.getElementById("profileStreak").textContent = `${s.user.streak}🔥`;
+  document.getElementById("xpBar").style.width = Math.min(100, Math.round((s.user.xp / s.user.xpMax) * 100)) + "%";
+
+  // Badges
+  const badgeGrid = document.getElementById("badgeGrid");
+  badgeGrid.innerHTML = "";
+  sb_badges().forEach(b => {
+    const div = document.createElement("div");
+    div.className = "badge" + (b.unlocked ? "" : " locked");
+    div.innerHTML = `
+      <span>${b.icon}</span>
+      <h4>${b.name}</h4>
+      <p>${b.desc}</p>
+    `;
+    badgeGrid.appendChild(div);
+  });
+
+  // Edit name
+  const input = document.getElementById("userName");
+  const editBtn = document.getElementById("editNameBtn");
+  let editing = false;
+
+  editBtn.onclick = () => {
+    if (!editing) {
+      input.removeAttribute("readonly");
+      input.focus();
+      editBtn.textContent = "Save";
+      editing = true;
+    } else {
+      const newName = input.value.trim() || "Student";
+      sb_updateName(newName);
+      input.setAttribute("readonly", true);
+      editBtn.textContent = "Edit";
+      editing = false;
+      // update avatar
+      avatar.textContent = newName.split(" ").map(n=>n[0]).join("").toUpperCase().slice(0,2);
+      alert("Name updated successfully ✅");
+    }
+  };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.documentElement.getAttribute("data-page");
+  if (page === "profile") initProfile();
+});
+
+
