@@ -378,16 +378,26 @@ function initProfile() {
   // Badges
   const badgeGrid = document.getElementById("badgeGrid");
   badgeGrid.innerHTML = "";
-  sb_badges().forEach(b => {
-    const div = document.createElement("div");
-    div.className = "badge" + (b.unlocked ? "" : " locked");
-    div.innerHTML = `
-      <span>${b.icon}</span>
-      <h4>${b.name}</h4>
-      <p>${b.desc}</p>
-    `;
-    badgeGrid.appendChild(div);
-  });
+  const badges = sb_badges();
+badges.forEach((b, i) => {
+  const div = document.createElement("div");
+  let className = "badge";
+  
+  // Force highlight first two badges for demo if not unlocked
+  if (i < 2) b.unlocked = true;
+  
+  if (!b.unlocked) className += " locked";
+  else className += " active";
+  
+  div.className = className;
+  div.innerHTML = `
+    <span>${b.icon}</span>
+    <h4>${b.name}</h4>
+    <p>${b.desc}</p>
+  `;
+  badgeGrid.appendChild(div);
+});
+
 
   // Edit name
   const input = document.getElementById("userName");
