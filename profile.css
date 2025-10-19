@@ -27,7 +27,7 @@ body {
   border:1px solid #e5e7eb;
   box-shadow:0 8px 32px rgba(0,0,0,0.05);
   text-align:center;
-  padding:30px 20px;
+  padding:35px 20px 25px;
   margin-top:20px;
   display:flex;
   flex-direction:column;
@@ -39,8 +39,9 @@ body {
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:12px;
-  margin-bottom:15px;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:20px;
 }
 
 .avatar {
@@ -54,16 +55,18 @@ body {
   display:flex;
   justify-content:center;
   align-items:center;
-  flex-shrink:0;
-  box-shadow:0 0 10px rgba(76,175,80,0.2);
+  box-shadow:0 0 10px rgba(76,175,80,0.25);
 }
 
-.user-info {
+.user-block {
+  text-align:center;
+}
+
+.user-name-row {
   display:flex;
   justify-content:center;
   align-items:center;
   gap:10px;
-  flex-wrap:wrap;
 }
 
 #userName {
@@ -74,7 +77,6 @@ body {
   text-align:center;
   outline:none;
   color:#111827;
-  width:auto;
 }
 #userName[readonly] {
   cursor:default;
@@ -84,14 +86,16 @@ body {
 .stats {
   display:grid;
   grid-template-columns: repeat(4,1fr);
-  gap:10px;
-  margin-top:15px;
+  gap:12px;
+  margin-top:10px;
   font-size:15px;
+  width:100%;
+  max-width:600px;
 }
 .stats div {
   background:#f9fafb;
-  border-radius:10px;
-  padding:10px;
+  border-radius:12px;
+  padding:12px 10px;
 }
 .stats strong {
   display:block;
@@ -102,12 +106,12 @@ body {
 /* XP Progress Bar */
 .progress {
   background:#e2e8f0;
-  height:10px;
+  height:12px;
   border-radius:999px;
   overflow:hidden;
-  margin-top:20px;
+  margin-top:25px;
   width:100%;
-  max-width:500px;
+  max-width:600px;
 }
 .progress__bar {
   background:#4CAF50;
@@ -119,10 +123,10 @@ body {
 
 /* --- Achievements --- */
 .achievements {
-  margin-top:40px;
+  margin-top:45px;
 }
 .achievements h2 {
-  margin-bottom:10px;
+  margin-bottom:12px;
   font-weight:700;
 }
 .badge-grid {
