@@ -311,7 +311,7 @@ function courseCardFull(c) {
     <span class="status ${c.status || "active"}">${(c.status || "active").toUpperCase()}</span>
     <div class="actions-row">
       <button class="btn green">Summary</button>
-      <button class="btn outline">View</button>
+      <a href="course-details.html" class="btn outline">View</a>
     </div>
   `;
   return card;
