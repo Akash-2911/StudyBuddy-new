@@ -428,7 +428,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "profile") initProfile();
 });
 
-// ---------------- ENHANCED UPLOAD PAGE ----------------
 function initUpload() {
   const fileInput = document.getElementById("fileInput");
   const uploadZone = document.getElementById("uploadZone");
@@ -438,7 +437,7 @@ function initUpload() {
   const generateBtn = document.getElementById("generateBtn");
   const clearBtn = document.getElementById("clearBtn");
 
-  // Create file-info element dynamically
+  // Create file info element
   const fileInfo = document.createElement("div");
   fileInfo.id = "fileInfo";
   fileInfo.className = "file-info hidden";
@@ -446,19 +445,17 @@ function initUpload() {
 
   let uploadedFile = null;
 
-  // Handle file selection (single trigger)
-  fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
+  // ----- Core function to handle file -----
+  function handleFileSelect(file) {
     if (!file) return;
-
     uploadedFile = file;
     const name = file.name.toLowerCase();
 
     // Show file details
     fileInfo.classList.remove("hidden");
-    fileInfo.innerHTML = `✅ <strong>${file.name}</strong> (${(file.size/1024).toFixed(1)} KB) uploaded`;
+    fileInfo.innerHTML = `✅ <strong>${file.name}</strong> (${(file.size / 1024).toFixed(1)} KB) uploaded`;
 
-    // Check for PPT or PPTX only
+    // Check if file is PPT or PPTX
     if (name.endsWith(".ppt") || name.endsWith(".pptx")) {
       warningBox.classList.remove("hidden");
       warningBox.textContent = "⚠️ PowerPoint files (.ppt / .pptx) are not supported.";
@@ -467,21 +464,45 @@ function initUpload() {
       warningBox.classList.add("hidden");
       generateBtn.disabled = false;
     }
+  }
+
+  // ----- File selection -----
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) handleFileSelect(file);
   });
 
-  // Click zone opens file chooser only if no file selected
-  uploadZone.addEventListener("click", () => {
-    if (!uploadedFile) fileInput.click();
+  // ----- Upload zone click -----
+  uploadZone.addEventListener("click", () => fileInput.click());
+
+  // ----- Drag & drop support -----
+  uploadZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    uploadZone.style.background = "#f0fdf4";
+    uploadZone.style.borderColor = "#4CAF50";
   });
 
-  // Generate Summary (mock logic)
+  uploadZone.addEventListener("dragleave", () => {
+    uploadZone.style.background = "#f9fafb";
+    uploadZone.style.borderColor = "#94a3b8";
+  });
+
+  uploadZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    uploadZone.style.background = "#f9fafb";
+    uploadZone.style.borderColor = "#94a3b8";
+    const file = e.dataTransfer.files[0];
+    handleFileSelect(file);
+  });
+
+  // ----- Generate Summary -----
   generateBtn.addEventListener("click", () => {
     if (!uploadedFile) return alert("Please upload a valid file first.");
 
     summaryBox.classList.remove("hidden");
     summaryText.textContent = "Processing your file... please wait.";
 
-    // Mock AI output delay
+    // Mock summary delay
     setTimeout(() => {
       summaryText.innerHTML = `
         <p>✨ <strong>Summary:</strong> The uploaded document discusses key learning materials and insights from your notes.</p>
@@ -491,7 +512,7 @@ function initUpload() {
     }, 1500);
   });
 
-  // Clear all
+  // ----- Clear -----
   clearBtn.addEventListener("click", () => {
     fileInput.value = "";
     uploadedFile = null;
@@ -501,4 +522,3 @@ function initUpload() {
     generateBtn.disabled = true;
   });
 }
-
