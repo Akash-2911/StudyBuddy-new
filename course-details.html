@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" data-page="course-details">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyBuddy • Course Details</title>
+  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="header.css">
+  <link rel="stylesheet" href="course-details.css">
+</head>
+<body>
+  <!-- Shared Header -->
+  <div id="header-container"></div>
+
+  <main class="container">
+    <!-- Course Header -->
+    <section class="course-header" id="courseHeader">
+      <div class="course-icon">📘</div>
+      <div class="course-info">
+        <h1 id="courseTitle">Course Name</h1>
+        <p class="instructor">Instructor: <span id="courseInstructor"></span></p>
+        <div class="progress">
+          <div class="progress__bar" id="courseProgress"></div>
+        </div>
+        <p class="status"><span id="coursePercent"></span> complete • <span id="courseXP"></span> XP</p>
+        <p class="desc" id="courseDesc">Course description...</p>
+      </div>
+    </section>
+
+    <!-- Chapters -->
+    <section class="course-chapters">
+      <h2>📚 Course Chapters</h2>
+      <div id="chaptersList" class="chapters-list"></div>
+    </section>
+  </main>
+
+  <!-- Shared Footer -->
+  <div id="footer-container"></div>
+
+  <script src="mockdata.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
