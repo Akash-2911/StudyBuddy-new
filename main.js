@@ -428,16 +428,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "profile") initProfile();
 });
 
+// Upload Page Section
 function initUpload() {
-  const fileInput = document.getElementById("fileInput");
   const uploadZone = document.getElementById("uploadZone");
+  const fileInput = document.getElementById("fileInput");
   const warningBox = document.getElementById("warningBox");
   const summaryBox = document.getElementById("summaryOutput");
   const summaryText = document.getElementById("summaryText");
   const generateBtn = document.getElementById("generateBtn");
   const clearBtn = document.getElementById("clearBtn");
 
-  // Create file info element
   const fileInfo = document.createElement("div");
   fileInfo.id = "fileInfo";
   fileInfo.className = "file-info hidden";
@@ -445,17 +445,15 @@ function initUpload() {
 
   let uploadedFile = null;
 
-  // ----- Core function to handle file -----
+  // Unified handler
   function handleFileSelect(file) {
     if (!file) return;
     uploadedFile = file;
     const name = file.name.toLowerCase();
 
-    // Show file details
     fileInfo.classList.remove("hidden");
     fileInfo.innerHTML = `✅ <strong>${file.name}</strong> (${(file.size / 1024).toFixed(1)} KB) uploaded`;
 
-    // Check if file is PPT or PPTX
     if (name.endsWith(".ppt") || name.endsWith(".pptx")) {
       warningBox.classList.remove("hidden");
       warningBox.textContent = "⚠️ PowerPoint files (.ppt / .pptx) are not supported.";
@@ -466,27 +464,25 @@ function initUpload() {
     }
   }
 
-  // ----- File selection -----
+  // CLICK upload
+  uploadZone.addEventListener("click", () => fileInput.click());
+
+  // When file chosen
   fileInput.addEventListener("change", (e) => {
-    const file = e.target.files && e.target.files[0];
+    const file = e.target.files[0];
     if (file) handleFileSelect(file);
   });
 
-  // ----- Upload zone click -----
-  uploadZone.addEventListener("click", () => fileInput.click());
-
-  // ----- Drag & drop support -----
+  // Drag & drop
   uploadZone.addEventListener("dragover", (e) => {
     e.preventDefault();
     uploadZone.style.background = "#f0fdf4";
     uploadZone.style.borderColor = "#4CAF50";
   });
-
   uploadZone.addEventListener("dragleave", () => {
     uploadZone.style.background = "#f9fafb";
     uploadZone.style.borderColor = "#94a3b8";
   });
-
   uploadZone.addEventListener("drop", (e) => {
     e.preventDefault();
     uploadZone.style.background = "#f9fafb";
@@ -495,14 +491,11 @@ function initUpload() {
     handleFileSelect(file);
   });
 
-  // ----- Generate Summary -----
+  // Generate summary (mock)
   generateBtn.addEventListener("click", () => {
     if (!uploadedFile) return alert("Please upload a valid file first.");
-
     summaryBox.classList.remove("hidden");
     summaryText.textContent = "Processing your file... please wait.";
-
-    // Mock summary delay
     setTimeout(() => {
       summaryText.innerHTML = `
         <p>✨ <strong>Summary:</strong> The uploaded document discusses key learning materials and insights from your notes.</p>
@@ -512,7 +505,7 @@ function initUpload() {
     }, 1500);
   });
 
-  // ----- Clear -----
+  // Clear
   clearBtn.addEventListener("click", () => {
     fileInput.value = "";
     uploadedFile = null;
@@ -522,3 +515,8 @@ function initUpload() {
     generateBtn.disabled = true;
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.documentElement.getAttribute("data-page");
+  if (page === "upload") initUpload();
+});
