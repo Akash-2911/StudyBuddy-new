@@ -441,15 +441,17 @@ function initUpload() {
   let uploadedFile = null;
 
   // Handle file select
-  fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+fileInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const isTxt = file.name.endsWith(".txt");
-    uploadedFile = file;
+  const name = file.name.toLowerCase();
+  uploadedFile = file;
 
-    if (!isTxt) {
+    // Reject only PPT and PPTX
+    if (name.endsWith(".ppt") || name.endsWith(".pptx")) {
       warningBox.classList.remove("hidden");
+      warningBox.textContent = "⚠️ PowerPoint files (.ppt / .pptx) are not supported.";
       generateBtn.disabled = true;
     } else {
       warningBox.classList.add("hidden");
