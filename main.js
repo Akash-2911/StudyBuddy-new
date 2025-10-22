@@ -428,4 +428,69 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "profile") initProfile();
 });
 
+// ---------------- UPLOAD PAGE ----------------
+function initUpload() {
+  const fileInput = document.getElementById("fileInput");
+  const uploadZone = document.getElementById("uploadZone");
+  const warningBox = document.getElementById("warningBox");
+  const summaryBox = document.getElementById("summaryOutput");
+  const summaryText = document.getElementById("summaryText");
+  const generateBtn = document.getElementById("generateBtn");
+  const clearBtn = document.getElementById("clearBtn");
+
+  let uploadedFile = null;
+
+  // Handle file select
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const isTxt = file.name.endsWith(".txt");
+    uploadedFile = file;
+
+    if (!isTxt) {
+      warningBox.classList.remove("hidden");
+      generateBtn.disabled = true;
+    } else {
+      warningBox.classList.add("hidden");
+      generateBtn.disabled = false;
+    }
+  });
+
+  // Click zone trigger
+  uploadZone.addEventListener("click", () => fileInput.click());
+
+  // Generate Summary (mock logic for now)
+  generateBtn.addEventListener("click", () => {
+    if (!uploadedFile) return alert("Please upload a valid file first.");
+
+    summaryBox.classList.remove("hidden");
+    summaryText.textContent = "Processing your file... please wait.";
+
+    // Mock AI output delay
+    setTimeout(() => {
+      summaryText.innerHTML = `
+        <p>✨ <strong>Summary:</strong> The uploaded document discusses key learning materials and insights from your notes.</p>
+        <p>⚡ Highlight: The system identifies the main concepts, simplifying complex terms for faster study.</p>
+        <p>🧠 Tip: Verify your content source for more accurate AI summaries.</p>
+      `;
+    }, 1500);
+  });
+
+  // Clear
+  clearBtn.addEventListener("click", () => {
+    fileInput.value = "";
+    uploadedFile = null;
+    warningBox.classList.add("hidden");
+    summaryBox.classList.add("hidden");
+    generateBtn.disabled = true;
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.documentElement.getAttribute("data-page");
+  if (page === "upload") initUpload();
+});
+
+
 
