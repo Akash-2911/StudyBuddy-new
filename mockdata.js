@@ -258,3 +258,43 @@ function sb_badges() {
   return badges;
 }
 
+// ---------------- COURSES DETAIL MOCK DATA ----------------
+const courseDetailsData = {
+  "PY101": {
+    name: "Python Programming",
+    instructor: "Dr. Olivia Stone",
+    progress: 25,
+    xp: 150,
+    desc: "Learn Python programming fundamentals, data structures, and OOP concepts.",
+    chapters: [
+      { title: "Introduction to Python", progress: 40, xp: 50 },
+      { title: "Data Structures", progress: 10, xp: 30 },
+      { title: "OOP Basics", progress: 0, xp: 20 }
+    ]
+  },
+  "WD201": {
+    name: "HTML & Web Design",
+    instructor: "Prof. Daniel Reed",
+    progress: 45,
+    xp: 230,
+    desc: "Understand how to build modern web pages using semantic HTML and beautiful design structure.",
+    chapters: [
+      { title: "HTML Basics", progress: 70, xp: 80 },
+      { title: "Forms & Inputs", progress: 50, xp: 60 },
+      { title: "Responsive Design", progress: 30, xp: 90 }
+    ]
+  },
+  "DM301": {
+    name: "Digital Marketing",
+    instructor: "Dr. Sophia Green",
+    progress: 80,
+    xp: 340,
+    desc: "Master online advertising, SEO, and data-driven content strategy.",
+    chapters: [
+      { title: "SEO Fundamentals", progress: 80, xp: 120 },
+      { title: "Social Media Strategy", progress: 70, xp: 110 },
+      { title: "Analytics & Reporting", progress: 90, xp: 110 }
+    ]
+  }
+};
+
