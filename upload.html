@@ -19,29 +19,31 @@
       <p class="muted">Upload your study notes to generate a smart AI-powered summary. </p>
     </section>
 
-    <!-- Upload Card -->
-    <section class="upload-card" id="uploadCard">
-      <div id="uploadZone" class="upload-zone">
-        <p>Drag & drop your file here<br><span>or click to upload</span></p>
-        <input type="file" id="fileInput">
-      </div>
+      <!-- Upload Card -->
+  <section class="upload-card" id="uploadCard">
+    <div id="uploadZone" class="upload-zone">
+      <p>Drag & drop your file here<br><span>or click to upload</span></p>
+    </div>
+  
+    <!-- move input OUTSIDE uploadZone -->
+    <input type="file" id="fileInput" style="display:none">
+  
+    <div id="warningBox" class="warning hidden">
+      ⚠️ This file type is unverified. The generated summary might be inaccurate.
+    </div>
+  
+    <div class="actions">
+      <button class="btn blue" id="generateBtn" disabled>✨ Generate Summary</button>
+      <button class="btn outline" id="clearBtn">Clear</button>
+    </div>
+  
+    <!-- Mock Summary Output -->
+    <div id="summaryOutput" class="summary hidden">
+      <h3>📘 AI Summary Preview</h3>
+      <p id="summaryText">Processing your file... please wait.</p>
+    </div>
+  </section>
 
-      <div id="warningBox" class="warning hidden">
-        ⚠️ This file type is unverified. The generated summary might be inaccurate.
-      </div>
-
-      <div class="actions">
-        <button class="btn blue" id="generateBtn" disabled>✨ Generate Summary</button>
-        <button class="btn outline" id="clearBtn">Clear</button>
-      </div>
-
-      <!-- Mock Summary Output -->
-      <div id="summaryOutput" class="summary hidden">
-        <h3>📘 AI Summary Preview</h3>
-        <p id="summaryText">Processing your file... please wait.</p>
-      </div>
-    </section>
-  </main>
 
   <!-- Shared Footer -->
   <div id="footer-container"></div>
