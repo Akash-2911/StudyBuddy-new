@@ -428,7 +428,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "profile") initProfile();
 });
 
-// ---------------- FIXED UPLOAD PAGE ----------------
+// ---------------- ENHANCED UPLOAD PAGE ----------------
 function initUpload() {
   const fileInput = document.getElementById("fileInput");
   const uploadZone = document.getElementById("uploadZone");
@@ -437,6 +437,12 @@ function initUpload() {
   const summaryText = document.getElementById("summaryText");
   const generateBtn = document.getElementById("generateBtn");
   const clearBtn = document.getElementById("clearBtn");
+
+  // Create file-info element dynamically
+  const fileInfo = document.createElement("div");
+  fileInfo.id = "fileInfo";
+  fileInfo.className = "file-info hidden";
+  uploadZone.insertAdjacentElement("afterend", fileInfo);
 
   let uploadedFile = null;
 
@@ -447,6 +453,10 @@ function initUpload() {
 
     uploadedFile = file;
     const name = file.name.toLowerCase();
+
+    // Show file details
+    fileInfo.classList.remove("hidden");
+    fileInfo.innerHTML = `✅ <strong>${file.name}</strong> (${(file.size/1024).toFixed(1)} KB) uploaded`;
 
     // Check for PPT or PPTX only
     if (name.endsWith(".ppt") || name.endsWith(".pptx")) {
@@ -460,8 +470,7 @@ function initUpload() {
   });
 
   // Click zone opens file chooser only if no file selected
-  uploadZone.addEventListener("click", (e) => {
-    // prevent re-trigger if already selected once
+  uploadZone.addEventListener("click", () => {
     if (!uploadedFile) fileInput.click();
   });
 
@@ -486,8 +495,10 @@ function initUpload() {
   clearBtn.addEventListener("click", () => {
     fileInput.value = "";
     uploadedFile = null;
+    fileInfo.classList.add("hidden");
     warningBox.classList.add("hidden");
     summaryBox.classList.add("hidden");
     generateBtn.disabled = true;
   });
 }
+
