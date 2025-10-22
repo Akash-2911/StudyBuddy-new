@@ -428,7 +428,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "profile") initProfile();
 });
 
-// ---------------- UPLOAD PAGE ----------------
+// ---------------- FIXED UPLOAD PAGE ----------------
 function initUpload() {
   const fileInput = document.getElementById("fileInput");
   const uploadZone = document.getElementById("uploadZone");
@@ -440,15 +440,15 @@ function initUpload() {
 
   let uploadedFile = null;
 
-  // Handle file select
-fileInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  // Handle file selection (single trigger)
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const name = file.name.toLowerCase();
-  uploadedFile = file;
+    uploadedFile = file;
+    const name = file.name.toLowerCase();
 
-    // Reject only PPT and PPTX
+    // Check for PPT or PPTX only
     if (name.endsWith(".ppt") || name.endsWith(".pptx")) {
       warningBox.classList.remove("hidden");
       warningBox.textContent = "⚠️ PowerPoint files (.ppt / .pptx) are not supported.";
@@ -459,10 +459,13 @@ fileInput.addEventListener("change", (e) => {
     }
   });
 
-  // Click zone trigger
-  uploadZone.addEventListener("click", () => fileInput.click());
+  // Click zone opens file chooser only if no file selected
+  uploadZone.addEventListener("click", (e) => {
+    // prevent re-trigger if already selected once
+    if (!uploadedFile) fileInput.click();
+  });
 
-  // Generate Summary (mock logic for now)
+  // Generate Summary (mock logic)
   generateBtn.addEventListener("click", () => {
     if (!uploadedFile) return alert("Please upload a valid file first.");
 
@@ -479,7 +482,7 @@ fileInput.addEventListener("change", (e) => {
     }, 1500);
   });
 
-  // Clear
+  // Clear all
   clearBtn.addEventListener("click", () => {
     fileInput.value = "";
     uploadedFile = null;
@@ -488,11 +491,3 @@ fileInput.addEventListener("change", (e) => {
     generateBtn.disabled = true;
   });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const page = document.documentElement.getAttribute("data-page");
-  if (page === "upload") initUpload();
-});
-
-
-
