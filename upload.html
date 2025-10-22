@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-page="upload">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyBuddy • Upload & Generate Summary</title>
+  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="header.css">
+  <link rel="stylesheet" href="upload.css">
+</head>
+<body>
+  <!-- Shared Header -->
+  <div id="header-container"></div>
+
+  <main class="container">
+    <section class="page-header">
+      <h1>📄 Upload & Generate Summary</h1>
+      <p class="muted">Upload your study notes to generate a smart AI-powered summary. (.txt only)</p>
+    </section>
+
+    <!-- Upload Card -->
+    <section class="upload-card" id="uploadCard">
+      <div id="uploadZone" class="upload-zone">
+        <p>Drag & drop your file here<br><span>or click to upload</span></p>
+        <input type="file" id="fileInput" accept=".txt">
+      </div>
+
+      <div id="warningBox" class="warning hidden">
+        ⚠️ This file type is unverified. The generated summary might be inaccurate.
+      </div>
+
+      <div class="actions">
+        <button class="btn blue" id="generateBtn" disabled>✨ Generate Summary</button>
+        <button class="btn outline" id="clearBtn">Clear</button>
+      </div>
+
+      <!-- Mock Summary Output -->
+      <div id="summaryOutput" class="summary hidden">
+        <h3>📘 AI Summary Preview</h3>
+        <p id="summaryText">Processing your file... please wait.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shared Footer -->
+  <div id="footer-container"></div>
+
+  <script src="mockdata.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
