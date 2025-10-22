@@ -520,3 +520,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const page = document.documentElement.getAttribute("data-page");
   if (page === "upload") initUpload();
 });
+
+// ---------------- COURSE DETAILS PAGE ----------------
+function initCourseDetails() {
+  const params = new URLSearchParams(window.location.search);
+  const courseId = params.get("id");
+  const data = courseDetailsData[courseId];
+
+  if (!data) return;
+
+  // Header info
+  document.getElementById("courseTitle").textContent = data.name;
+  document.getElementById("courseInstructor").textContent = data.instructor;
+  document.getElementById("courseDesc").textContent = data.desc;
+  document.getElementById("coursePercent").textContent = `${data.progress}%`;
+  document.getElementById("courseXP").textContent = data.xp;
+  document.getElementById("courseProgress").style.width = `${data.progress}%`;
+
+  // Chapters
+  const chaptersList = document.getElementById("chaptersList");
+  chaptersList.innerHTML = "";
+
+  data.chapters.forEach((ch, index) => {
+    const card = document.createElement("div");
+    card.className = "chapter-card";
+    card.innerHTML = `
+      <h3>${index + 1}. ${ch.title}</h3>
+      <p>Explore content and test your knowledge.</p>
+      <div class="chapter-progress">
+        <div class="chapter-progress-bar" style="width:${ch.progress}%"></div>
+      </div>
+      <p class="status">Progress: ${ch.progress}% • ${ch.xp} XP</p>
+      <div class="chapter-actions">
+        <button class="btn summary">📘 Summary</button>
+        <button class="btn quiz">🧠 Quiz</button>
+      </div>
+    `;
+    chaptersList.appendChild(card);
+  });
+}
+
+// Init page
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.documentElement.getAttribute("data-page");
+  if (page === "course-details") initCourseDetails();
+});
