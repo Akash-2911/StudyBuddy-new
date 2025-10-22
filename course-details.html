@@ -9,29 +9,85 @@
   <link rel="stylesheet" href="course-details.css">
 </head>
 <body>
-  
   <!-- Shared Header -->
   <div id="header-container"></div>
 
   <main class="container">
+    <!-- Back Navigation -->
+    <a href="course.html" class="back-link">← Back to Courses</a>
+
     <!-- Course Header -->
-    <section class="course-header" id="courseHeader">
-      <div class="course-icon">📘</div>
+    <section class="course-header">
+      <div class="course-icon">🐍</div>
       <div class="course-info">
-        <h1 id="courseTitle">Course Name</h1>
-        <p class="instructor">Instructor: <span id="courseInstructor"></span></p>
+        <h1>Python Programming</h1>
+        <p class="instructor">Instructor: <strong>Dr. Olivia Stone</strong></p>
+        <p class="badge">Level: Beginner</p>
+
         <div class="progress">
-          <div class="progress__bar" id="courseProgress"></div>
+          <div class="progress__bar" style="width:70%"></div>
         </div>
-        <p class="status"><span id="coursePercent"></span> complete • <span id="courseXP"></span> XP</p>
-        <p class="desc" id="courseDesc">Course description...</p>
+        <p class="status">70% complete • 420 XP</p>
+
+        <p class="desc">Learn the fundamentals of Python with practical examples and hands-on exercises.</p>
       </div>
     </section>
 
-    <!-- Chapters -->
+    <!-- Course Chapters -->
     <section class="course-chapters">
       <h2>📚 Course Chapters</h2>
-      <div id="chaptersList" class="chapters-list"></div>
+
+      <div class="chapter-card">
+        <h3>1. Introduction to Python</h3>
+        <p>Get started with syntax, variables, data types, and writing your first script.</p>
+        <div class="chapter-progress">
+          <div class="chapter-progress-bar" style="width:90%"></div>
+        </div>
+        <p class="status">Progress: 90% • 120 XP</p>
+        <div class="chapter-actions">
+          <button class="btn summary">📘 Summary</button>
+          <button class="btn quiz">🧠 Quiz</button>
+        </div>
+      </div>
+
+      <div class="chapter-card">
+        <h3>2. Data Structures</h3>
+        <p>Understand lists, tuples, dictionaries, and sets to organize your data efficiently.</p>
+        <div class="chapter-progress">
+          <div class="chapter-progress-bar" style="width:65%"></div>
+        </div>
+        <p class="status">Progress: 65% • 100 XP</p>
+        <div class="chapter-actions">
+          <button class="btn summary">📘 Summary</button>
+          <button class="btn quiz">🧠 Quiz</button>
+        </div>
+      </div>
+
+      <div class="chapter-card">
+        <h3>3. Functions & Loops</h3>
+        <p>Learn to write reusable functions and control flow using loops and conditions.</p>
+        <div class="chapter-progress">
+          <div class="chapter-progress-bar" style="width:50%"></div>
+        </div>
+        <p class="status">Progress: 50% • 80 XP</p>
+        <div class="chapter-actions">
+          <button class="btn summary">📘 Summary</button>
+          <button class="btn quiz">🧠 Quiz</button>
+        </div>
+      </div>
+
+      <div class="chapter-card">
+        <h3>4. OOP Basics</h3>
+        <p>Dive into Object-Oriented Programming — classes, objects, and methods.</p>
+        <div class="chapter-progress">
+          <div class="chapter-progress-bar" style="width:40%"></div>
+        </div>
+        <p class="status">Progress: 40% • 120 XP</p>
+        <div class="chapter-actions">
+          <button class="btn summary">📘 Summary</button>
+          <button class="btn quiz">🧠 Quiz</button>
+        </div>
+      </div>
     </section>
   </main>
 
