@@ -1,6 +1,7 @@
 <!-- Shared Header (load into #header-container) -->
 <header class="sb-header">
   <div class="sb-header__inner">
+    <!-- Brand -->
     <a href="index.html" class="brand">
       <span class="brand__logo"></span>
       <div class="brand__text">
@@ -8,8 +9,8 @@
         <small>AI-Powered Learning</small>
       </div>
     </a>
-    
 
+    <!-- Navigation Links -->
     <nav class="nav">
       <a href="home.html" class="nav__link" data-nav="home">Home</a>
       <a href="upload.html" class="nav__link" data-nav="upload">Upload</a>
@@ -18,11 +19,22 @@
       <a href="course.html" class="nav__link" data-nav="courses">Courses</a>
     </nav>
 
+    <!-- Right Section -->
     <div class="actions">
       <div class="pill sb-balance" id="sb-balance">0 SB</div>
       <a href="profile.html" class="avatar" title="Profile"></a>
+
+      <!-- Mobile Menu Toggle -->
+      <div class="menu-toggle" id="menuToggle">☰</div>
     </div>
   </div>
-  <!-- Mobile menu toggle -->
-<div class="menu-toggle" id="menuToggle">⋯</div>
 </header>
+
+<!-- Small JS script for menu toggle -->
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const header = document.querySelector('.sb-header');
+  menuToggle?.addEventListener('click', () => {
+    header.classList.toggle('active');
+  });
+</script>
