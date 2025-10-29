@@ -28,3 +28,81 @@
   .nav__link { padding:6px 8px; }
   .brand__text small { display:none; }
 }
+
+/* ============================
+   Mobile polish for top header
+   (no markup/JS changes needed)
+   ============================ */
+@media (max-width: 560px) {
+  /* Header container */
+  #header-container header {
+    padding: 8px 12px;
+    gap: 10px;
+    position: sticky;        /* keeps it visible on scroll */
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Left: logo + brand */
+  #header-container header .logo,
+  #header-container header .brand,
+  #header-container header .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;            /* prevent overflow */
+  }
+  #header-container header .brand,
+  #header-container header .brand-text {
+    font-size: 16px;         /* slightly smaller on phones */
+    line-height: 1;
+  }
+
+  /* Middle: nav becomes a horizontal rail */
+  #header-container header nav,
+  #header-container header .nav,
+  #header-container header .nav-links {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;         /* scroll if links don’t fit */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;    /* hide scrollbar (Firefox) */
+  }
+  /* hide scrollbar (WebKit) */
+  #header-container header nav::-webkit-scrollbar,
+  #header-container header .nav::-webkit-scrollbar,
+  #header-container header .nav-links::-webkit-scrollbar { display: none; }
+
+  /* Nav links: compact tap targets */
+  #header-container header nav a,
+  #header-container header .nav a,
+  #header-container header .nav-links a {
+    flex: 0 0 auto;           /* don’t wrap; allow scrolling */
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  /* Right side: SB pill + avatar tighten up */
+  #header-container header .right,
+  #header-container header .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #header-container header .sb-pill,
+  #header-container header .sb-badge {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 999px;
+  }
+  #header-container header .avatar,
+  #header-container header .profile {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+  }
+}
