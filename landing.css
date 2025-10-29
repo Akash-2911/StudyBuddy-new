@@ -24,17 +24,18 @@ body {
   gap: 8px;
 }
 
-.logo-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: #4CAF50;
+.logo-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  height: 80px;            /* ensures consistent height */
+  line-height: 1;          /* fixes baseline misalignment */
 }
 
 .brand {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2.5rem;
-  margin: 0;
+  display: flex;
+  align-items: center;     /* vertically aligns text with logo */
 }
 
 .brand .light {
