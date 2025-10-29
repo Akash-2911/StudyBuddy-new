@@ -29,80 +29,49 @@
   .brand__text small { display:none; }
 }
 
-/* ============================
-   Mobile polish for top header
-   (no markup/JS changes needed)
-   ============================ */
+/* ==============================
+   Mobile menu toggle (⋯ button)
+   ============================== */
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  user-select: none;
+  color: #333;
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.menu-toggle:hover {
+  background: rgba(0,0,0,0.05);
+}
+
 @media (max-width: 560px) {
-  /* Header container */
-  #header-container header {
-    padding: 8px 12px;
-    gap: 10px;
-    position: sticky;        /* keeps it visible on scroll */
-    top: 0;
-    z-index: 50;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-
-  /* Left: logo + brand */
-  #header-container header .logo,
-  #header-container header .brand,
-  #header-container header .logo-area {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;            /* prevent overflow */
-  }
-  #header-container header .brand,
-  #header-container header .brand-text {
-    font-size: 16px;         /* slightly smaller on phones */
-    line-height: 1;
-  }
-
-  /* Middle: nav becomes a horizontal rail */
+  /* Hide full nav and show ⋯ icon */
   #header-container header nav,
-  #header-container header .nav,
   #header-container header .nav-links {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;         /* scroll if links don’t fit */
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;    /* hide scrollbar (Firefox) */
+    display: none;
   }
-  /* hide scrollbar (WebKit) */
-  #header-container header nav::-webkit-scrollbar,
-  #header-container header .nav::-webkit-scrollbar,
-  #header-container header .nav-links::-webkit-scrollbar { display: none; }
-
-  /* Nav links: compact tap targets */
-  #header-container header nav a,
-  #header-container header .nav a,
-  #header-container header .nav-links a {
-    flex: 0 0 auto;           /* don’t wrap; allow scrolling */
-    padding: 8px 12px;
-    font-size: 14px;
-    border-radius: 10px;
-    white-space: nowrap;
+  .menu-toggle {
+    display: block;
   }
 
-  /* Right side: SB pill + avatar tighten up */
-  #header-container header .right,
-  #header-container header .actions {
+  /* When menu active, show dropdown */
+  #header-container header.active nav,
+  #header-container header.active .nav-links {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    z-index: 100;
   }
-  #header-container header .sb-pill,
-  #header-container header .sb-badge {
-    padding: 6px 10px;
-    font-size: 12px;
-    border-radius: 999px;
-  }
-  #header-container header .avatar,
-  #header-container header .profile {
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
+  #header-container header.active nav a {
+    padding: 12px 16px;
+    font-size: 16px;
   }
 }
