@@ -172,3 +172,10 @@ body {
     font-size: 0.9rem;
   }
 }
+
+a.primary-btn, a.secondary-btn {
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+
