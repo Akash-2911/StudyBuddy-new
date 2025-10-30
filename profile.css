@@ -178,3 +178,30 @@ body {
     max-width:90%;
   }
 }
+
+/* ------------------------------------
+   Mobile fix: name & Edit button layout
+   ------------------------------------ */
+@media (max-width: 560px) {
+  .user-name-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #userName {
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    max-width: 220px;
+  }
+
+  #editNameBtn {
+    width: auto;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    align-self: center;
+  }
+}
+
