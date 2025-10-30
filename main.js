@@ -1,31 +1,55 @@
-// Load shared header & footer
+// ---------------- SHARED HEADER & FOOTER LOADER ----------------
 document.addEventListener("DOMContentLoaded", async () => {
-  // Header
+  // HEADER
   const headerEl = document.getElementById("header-container");
   if (headerEl) {
-    const res = await fetch("header.html");
-    headerEl.innerHTML = await res.text();
-    // update nav active state
-    const page = document.documentElement.getAttribute("data-page");
-    const active = document.querySelector(`.nav__link[data-nav="${page}"]`);
-    if (active) active.classList.add("is-active");
+    try {
+      const res = await fetch("header.html");
+      headerEl.innerHTML = await res.text();
 
-    // update SB balance pill
-    const state = sb_all();
-    const sb = document.getElementById("sb-balance");
-    if (sb) sb.textContent = `${state.user.studyBucks} SB`;
+      // ✅ Setup active link highlight
+      const page = document.documentElement.getAttribute("data-page");
+      const active = headerEl.querySelector(`.nav__link[data-nav="${page}"]`);
+      if (active) active.classList.add("is-active");
+
+      // ✅ Setup StudyBucks pill
+      const state = sb_all();
+      const sb = headerEl.querySelector("#sb-balance");
+      if (sb) sb.textContent = `${state.user.studyBucks} SB`;
+
+      // ✅ Setup mobile menu toggle (☰)
+      const menuToggle = headerEl.querySelector("#menuToggle");
+      const header = headerEl.querySelector(".sb-header");
+      if (menuToggle && header) {
+        menuToggle.addEventListener("click", () => {
+          header.classList.toggle("active");
+        });
+      }
+    } catch (err) {
+      console.error("Error loading header:", err);
+    }
   }
 
-  // Footer
+  // FOOTER
   const footerEl = document.getElementById("footer-container");
   if (footerEl) {
-    const res = await fetch("footer.html");
-    footerEl.innerHTML = await res.text();
+    try {
+      const res = await fetch("footer.html");
+      footerEl.innerHTML = await res.text();
+    } catch (err) {
+      console.error("Error loading footer:", err);
+    }
   }
 
-  // Page-specific initializers
+  // PAGE-SPECIFIC INITIALIZERS
   const page = document.documentElement.getAttribute("data-page");
   if (page === "home") initHome();
+  if (page === "store") initStore();
+  if (page === "leaderboard") initLeaderboard();
+  if (page === "courses") initCourses();
+  if (page === "profile") initProfile();
+  if (page === "upload") initUpload();
+  if (page === "course-details") initCourseDetails();
 });
 
 // ---------------- HOME PAGE ----------------
