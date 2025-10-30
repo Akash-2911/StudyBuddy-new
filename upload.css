@@ -128,3 +128,33 @@ body {
   animation:fadeIn .3s ease;
 }
 .file-info strong { color:#064e3b; }
+
+/* ------------------------------------
+   Header Alignment Fix (Upload Page)
+   ------------------------------------ */
+[data-page="upload"] .sb-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: #ffffffcc;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 12px; /* add breathing room below header */
+}
+
+/* Ensure upload page doesn’t overlap or push header */
+[data-page="upload"] body,
+[data-page="upload"] .container {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Keep header elements perfectly aligned */
+[data-page="upload"] .sb-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
