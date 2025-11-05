@@ -488,20 +488,25 @@ function initUpload() {
     }
   }
 
-  // Prevent duplicate file dialogs
+// --- Fix double-open file dialog ---
 let fileDialogOpen = false;
 
-// CLICK upload (open once)
-uploadZone.addEventListener("click", () => {
-  if (fileDialogOpen) return; // Skip if already open
+// CLICK upload (only once per user action)
+uploadZone.addEventListener("click", (event) => {
+  // If already opening, skip
+  if (fileDialogOpen) return;
+
+  // Set flag to prevent re-trigger
   fileDialogOpen = true;
 
-  // Reset old file selection so same file can be re-uploaded
+  // Reset input so same file can be chosen again
   fileInput.value = "";
+
+  // Open system dialog
   fileInput.click();
 
-  // Reset flag after dialog closes
-  setTimeout(() => (fileDialogOpen = false), 800);
+  // Block this click event from re-firing on close
+  event.stopImmediatePropagation();
 });
 
 // When file chosen
@@ -509,9 +514,12 @@ fileInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (file) handleFileSelect(file);
 
-  // Immediately allow next upload
-  fileDialogOpen = false;
+  // Wait a moment and then clear the flag
+  setTimeout(() => {
+    fileDialogOpen = false;
+  }, 1000); // delay ensures browser refocus doesn’t retrigger click
 });
+
 
   // Drag & drop
   uploadZone.addEventListener("dragover", (e) => {
