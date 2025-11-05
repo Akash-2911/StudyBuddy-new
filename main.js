@@ -488,14 +488,30 @@ function initUpload() {
     }
   }
 
-  // CLICK upload
-  uploadZone.addEventListener("click", () => fileInput.click());
+  // Prevent duplicate file dialogs
+let fileDialogOpen = false;
 
-  // When file chosen
-  fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (file) handleFileSelect(file);
-  });
+// CLICK upload (open once)
+uploadZone.addEventListener("click", () => {
+  if (fileDialogOpen) return; // Skip if already open
+  fileDialogOpen = true;
+
+  // Reset old file selection so same file can be re-uploaded
+  fileInput.value = "";
+  fileInput.click();
+
+  // Reset flag after dialog closes
+  setTimeout(() => (fileDialogOpen = false), 800);
+});
+
+// When file chosen
+fileInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (file) handleFileSelect(file);
+
+  // Immediately allow next upload
+  fileDialogOpen = false;
+});
 
   // Drag & drop
   uploadZone.addEventListener("dragover", (e) => {
