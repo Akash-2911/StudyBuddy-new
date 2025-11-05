@@ -462,11 +462,14 @@ function initUpload() {
   const generateBtn = document.getElementById("generateBtn");
   const clearBtn = document.getElementById("clearBtn");
 
-  const fileInfo = document.createElement("div");
+  // Ensure only one file info element exists
+let fileInfo = document.getElementById("fileInfo");
+if (!fileInfo) {
+  fileInfo = document.createElement("div");
   fileInfo.id = "fileInfo";
   fileInfo.className = "file-info hidden";
   uploadZone.insertAdjacentElement("afterend", fileInfo);
-
+}
   let uploadedFile = null;
 
   // Unified handler
