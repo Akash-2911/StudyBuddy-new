@@ -1,1 +1,103 @@
+/* =========================
+   STUDYBUDDY – BUTTON SYSTEM
+   ========================= */
+:root {
+  --sb-green: #22c55e;      /* brand green */
+  --sb-green-700: #16a34a;
+  --sb-blue: #3b82f6;       /* action blue */
+  --sb-blue-700: #2563eb;
+  --sb-text: #0f172a;
+  --sb-muted: #64748b;
+  --sb-ring: 0 8px 30px rgba(16,185,129,.18);
+  --sb-ring-blue: 0 8px 30px rgba(59,130,246,.18);
+}
 
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font: 600 14px/1.1 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--sb-text);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.06s ease, box-shadow 0.18s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Variants */
+.btn.green {
+  background: var(--sb-green);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: var(--sb-ring);
+}
+
+.btn.green:hover {
+  background: var(--sb-green-700);
+}
+
+.btn.blue {
+  background: var(--sb-blue);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: var(--sb-ring-blue);
+}
+
+.btn.blue:hover {
+  background: var(--sb-blue-700);
+}
+
+.btn.outline {
+  background: #fff;
+  border-color: #dbe1e8;
+  color: var(--sb-text);
+}
+
+.btn.outline:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.btn.small {
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+.btn.pill {
+  border-radius: 999px;
+}
+
+/* Disabled state */
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+  filter: grayscale(0.12);
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+  .btn {
+    padding: 9px 14px;
+    border-radius: 10px;
+  }
+  .btn.small {
+    padding: 7px 10px;
+  }
+}
