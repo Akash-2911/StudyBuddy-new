@@ -575,8 +575,11 @@ quizBtn.addEventListener("click", async () => {
   const seeAnswersBtn = document.getElementById("seeAnswersBtn");
   const tryAgainBtn = document.getElementById("tryAgainBtn");
 
-  quizSection.classList.remove("hidden");
-  quizContainer.innerHTML = "Generating quiz questions...";
+quizSection.classList.remove("hidden");
+quizContainer.innerHTML = "<p>Generating quiz questions...</p>";
+submitQuizBtn.disabled = true;
+submitQuizBtn.classList.add("disabled");
+
 
   try {
     const formData = new FormData();
@@ -591,6 +594,9 @@ quizBtn.addEventListener("click", async () => {
     const data = await res.json();
 
     // Render quiz
+    submitQuizBtn.disabled = false;
+submitQuizBtn.classList.remove("disabled");
+
     quizContainer.innerHTML = "";
     data.questions.forEach((q, i) => {
       const div = document.createElement("div");
