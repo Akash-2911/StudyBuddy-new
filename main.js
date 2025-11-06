@@ -542,48 +542,30 @@ fileInput.addEventListener("change", (e) => {
     handleFileSelect(file);
   });
 
-  // Generate summary (real via /api/summary)
+ // Generate summary (PDF/DOCX/PPT support)
 generateBtn.addEventListener("click", async () => {
   if (!uploadedFile) return alert("Please upload a valid file first.");
   summaryBox.classList.remove("hidden");
-  summaryText.textContent = "Processing with AI…";
+  summaryText.textContent = "Uploading and analyzing your file…";
 
   try {
-    // For now we support text-like files (txt, md, csv, json, code, etc.)
-    const text = await uploadedFile.text().catch(() => "");
-    if (!text) {
-      summaryText.innerHTML = `
-        ⚠️ This file type can't be read as text in the browser.
-        For the demo, please upload a text-like file (txt/md/csv).<br/>
-        (Later we can add PDF/DOCX support via server-side parsing.)
-      `;
-      return;
-    }
+    const formData = new FormData();
+    formData.append("file", uploadedFile);
 
     const res = await fetch("/api/summary", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        filename: uploadedFile.name,
-        content: text
-      })
+      body: formData
     });
 
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || "Proxy error");
-    }
-
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
     const data = await res.json();
-    summaryText.innerHTML = `
-      <p>✨ <strong>Summary:</strong> ${data.summary}</p>
-      <p class="muted">Tip: Later we’ll send PDFs/DOCX via server and parse them there for better accuracy.</p>
-    `;
+    summaryText.innerHTML = `<p>✨ <strong>Summary:</strong> ${data.summary}</p>`;
   } catch (e) {
     console.error(e);
-    summaryText.textContent = "⚠️ Error generating summary. Please try again.";
+    summaryText.textContent = "⚠️ Failed to summarize file.";
   }
 });
+
 
   // Clear
   clearBtn.addEventListener("click", () => {
