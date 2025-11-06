@@ -461,15 +461,17 @@ function initUpload() {
   const summaryText = document.getElementById("summaryText");
   const generateBtn = document.getElementById("generateBtn");
   const clearBtn = document.getElementById("clearBtn");
+  const quizBtn = document.getElementById("quizBtn"); // ✅ Added reference
 
   // Ensure only one file info element exists
-let fileInfo = document.getElementById("fileInfo");
-if (!fileInfo) {
-  fileInfo = document.createElement("div");
-  fileInfo.id = "fileInfo";
-  fileInfo.className = "file-info hidden";
-  uploadZone.insertAdjacentElement("afterend", fileInfo);
-}
+  let fileInfo = document.getElementById("fileInfo");
+  if (!fileInfo) {
+    fileInfo = document.createElement("div");
+    fileInfo.id = "fileInfo";
+    fileInfo.className = "file-info hidden";
+    uploadZone.insertAdjacentElement("afterend", fileInfo);
+  }
+
   let uploadedFile = null;
 
   // Unified handler
@@ -485,44 +487,34 @@ if (!fileInfo) {
       warningBox.classList.remove("hidden");
       warningBox.textContent = "⚠️ PowerPoint files (.ppt / .pptx) are not supported.";
       generateBtn.disabled = true;
+      quizBtn.disabled = true; // 🚫 disable quiz for unsupported
     } else {
       warningBox.classList.add("hidden");
       generateBtn.disabled = false;
+      quizBtn.disabled = false; // ✅ enable quiz button once valid file uploaded
     }
   }
 
-// --- Fix double-open file dialog ---
-let fileDialogOpen = false;
+  // --- Fix double-open file dialog ---
+  let fileDialogOpen = false;
 
-// CLICK upload (only once per user action)
-uploadZone.addEventListener("click", (event) => {
-  // If already opening, skip
-  if (fileDialogOpen) return;
+  // CLICK upload (only once per user action)
+  uploadZone.addEventListener("click", (event) => {
+    if (fileDialogOpen) return;
+    fileDialogOpen = true;
+    fileInput.value = "";
+    fileInput.click();
+    event.stopImmediatePropagation();
+  });
 
-  // Set flag to prevent re-trigger
-  fileDialogOpen = true;
-
-  // Reset input so same file can be chosen again
-  fileInput.value = "";
-
-  // Open system dialog
-  fileInput.click();
-
-  // Block this click event from re-firing on close
-  event.stopImmediatePropagation();
-});
-
-// When file chosen
-fileInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (file) handleFileSelect(file);
-
-  // Wait a moment and then clear the flag
-  setTimeout(() => {
-    fileDialogOpen = false;
-  }, 1000); // delay ensures browser refocus doesn’t retrigger click
-});
-
+  // When file chosen
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) handleFileSelect(file);
+    setTimeout(() => {
+      fileDialogOpen = false;
+    }, 1000);
+  });
 
   // Drag & drop
   uploadZone.addEventListener("dragover", (e) => {
@@ -542,37 +534,41 @@ fileInput.addEventListener("change", (e) => {
     handleFileSelect(file);
   });
 
- // Generate summary (PDF/DOCX/PPT support)
-generateBtn.addEventListener("click", async () => {
-  if (!uploadedFile) return alert("Please upload a valid file first.");
-  summaryBox.classList.remove("hidden");
-  summaryText.textContent = "Uploading and analyzing your file…";
+  // --- Generate Summary (PDF/DOCX/PPT support) ---
+  generateBtn.addEventListener("click", async () => {
+    if (!uploadedFile) return alert("Please upload a valid file first.");
+    summaryBox.classList.remove("hidden");
+    summaryText.textContent = "Uploading and analyzing your file…";
 
-  try {
-    const formData = new FormData();
-    formData.append("file", uploadedFile);
+    try {
+      const formData = new FormData();
+      formData.append("file", uploadedFile);
 
-    const res = await fetch("https://studybuddy-new-tau.vercel.app/api/summary", {
-  method: "POST",
-  body: formData
-});
+      const res = await fetch("https://studybuddy-new-tau.vercel.app/api/summary", {
+        method: "POST",
+        body: formData
+      });
 
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
+      const data = await res.json();
+      summaryText.innerHTML = `
+        <div class="ai-summary">
+          ${marked.parse(data.summary || "⚠️ No summary generated.")}
+        </div>
+      `;
+    } catch (e) {
+      console.error(e);
+      summaryText.textContent = "⚠️ Failed to summarize file.";
+    }
+  });
 
-    if (!res.ok) throw new Error(`Server error ${res.status}`);
-    const data = await res.json();
-    summaryText.innerHTML = `
-  <div class="ai-summary">
-    ${marked.parse(data.summary || "⚠️ No summary generated.")}
-  </div>
-`;
-  } catch (e) {
-    console.error(e);
-    summaryText.textContent = "⚠️ Failed to summarize file.";
-  }
-});
+  // --- Placeholder: Generate Quiz logic will go here ---
+  quizBtn?.addEventListener("click", () => {
+    if (!uploadedFile) return alert("Please upload a valid file first.");
+    alert("🧠 Quiz generation feature coming next!");
+  });
 
-
-  // Clear
+  // --- Clear all ---
   clearBtn.addEventListener("click", () => {
     fileInput.value = "";
     uploadedFile = null;
@@ -580,6 +576,7 @@ generateBtn.addEventListener("click", async () => {
     warningBox.classList.add("hidden");
     summaryBox.classList.add("hidden");
     generateBtn.disabled = true;
+    quizBtn.disabled = true;
   });
 }
 
