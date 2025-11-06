@@ -225,3 +225,10 @@ body {
   justify-content: space-around;
 }
 
+.unverified-warning {
+  color: #dc2626; /* red tone */
+  font-weight: 700;
+  text-align: center;
+  margin: 10px 0 15px;
+  font-size: 14px;
+}
