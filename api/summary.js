@@ -7,7 +7,7 @@ import { convertToHtml } from "mammoth";
 import pptxParser from "pptx-parser";
 
 export const config = {
-  api: { bodyParser: false } // allow multipart/form-data
+  api: { bodyParser: false } // allow multipart/form-dataa
 };
 
 export default async function handler(req, res) {
