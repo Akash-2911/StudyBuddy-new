@@ -560,7 +560,11 @@ generateBtn.addEventListener("click", async () => {
 
     if (!res.ok) throw new Error(`Server error ${res.status}`);
     const data = await res.json();
-    summaryText.innerHTML = `<p>✨ <strong>Summary:</strong> ${data.summary}</p>`;
+    summaryText.innerHTML = `
+  <div class="ai-summary">
+    ${marked.parse(data.summary || "⚠️ No summary generated.")}
+  </div>
+`;
   } catch (e) {
     console.error(e);
     summaryText.textContent = "⚠️ Failed to summarize file.";
