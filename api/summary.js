@@ -35,14 +35,21 @@ export default async function handler(req, res) {
     }
 
     else if (ext === "docx" || ext === "pptx") {
-      try {
-        const text = await officeParser.parseOfficeAsync(filePath);
-        textContent = text;
-      } catch (err) {
-        console.error("OfficeParser error:", err);
-        textContent = `⚠️ Unable to extract text from ${ext.toUpperCase()} file.`;
-      }
+  try {
+    let text = await officeParser.parseOfficeAsync(filePath);
+    // Fallback to mammoth if OfficeParser fails or returns empty
+    if (!text || text.trim().length < 50) {
+      console.log("⚠️ OfficeParser returned empty, retrying with Mammoth...");
+      const mammothResult = await mammoth.extractRawText({ path: filePath });
+      text = mammothResult.value;
     }
+    textContent = text;
+  } catch (err) {
+    console.error("OfficeParser/Mammoth error:", err);
+    textContent = "";
+  }
+}
+
 
     else if (ext === "txt") {
       textContent = await fs.promises.readFile(filePath, "utf8");
@@ -65,8 +72,9 @@ export default async function handler(req, res) {
               parts: [
                 {
                   text:
-                    "Summarize this study material in clear, concise bullet points for students:\n\n" +
-                    textContent,
+  "Summarize the following academic or study material accurately. Focus on key points, concepts, and structure:\n\n" +
+  textContent,
+
                 },
               ],
             },
