@@ -12,10 +12,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
 
   const form = formidable({ multiples: false });
+
   form.parse(req, async (err, fields, files) => {
     if (err) return res.status(500).json({ error: "File parse error" });
 
-    const file = files.file[0];
+    const file = files.file?.[0];
+    if (!file) return res.status(400).json({ error: "No file uploaded" });
+
     const filePath = file.filepath;
     const ext = file.originalFilename.split(".").pop().toLowerCase();
 
@@ -32,18 +35,23 @@ export default async function handler(req, res) {
         text = await officeParser.parseOfficeAsync(filePath);
       }
     } catch (e) {
-      console.error(e);
+      console.error("❌ File parse failed:", e);
     }
 
-    if (!text.trim()) return res.status(400).json({ error: "Empty text" });
+    if (!text.trim())
+      return res.status(400).json({ error: "Empty or unreadable file" });
 
     const prompt = `
-Create 5 short multiple-choice quiz questions (MCQs) from the following text.
-Each question should include:
-- "question": the question text
-- "options": 4 answer choices
-- "answer": the correct option text
-Return the result as valid JSON array.
+Generate 5 short, clear multiple-choice quiz questions from the text below.
+Each question must be in JSON format with fields:
+[
+  {
+    "question": "string",
+    "options": ["A", "B", "C", "D"],
+    "answer": "one correct option text"
+  }
+]
+Only return valid JSON — no explanations or extra text.
 
 Text:
 ${text.slice(0, 8000)}
@@ -63,13 +71,18 @@ ${text.slice(0, 8000)}
       );
 
       const result = await response.json();
-      const aiText =
-        result?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-      const questions = JSON.parse(aiText.match(/\[.*\]/s)?.[0] || "[]");
+      const aiText = result?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+      // Safely extract JSON array
+      const match = aiText.match(/\[[\s\S]*\]/);
+      const questions = match ? JSON.parse(match[0]) : [];
+
+      if (!questions.length)
+        return res.status(400).json({ error: "No quiz generated" });
 
       res.status(200).json({ questions });
     } catch (err) {
-      console.error(err);
+      console.error("❌ AI generation failed:", err);
       res.status(500).json({ error: "AI generation failed" });
     }
   });
