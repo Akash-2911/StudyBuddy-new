@@ -105,9 +105,21 @@ else if (ext === "docx" || ext === "pptx") {
             {
               parts: [
                 {
-                  text:
-  "Summarize the following academic or study material accurately. Focus on key points, concepts, and structure:\n\n" +
-  textContent,
+                  "text": `
+Generate a clean, well-structured summary of the following study material. 
+Format the response using Markdown with these sections:
+
+✨ **Summary (2-3 sentences)** — A quick, clear overview of what the content covers.
+
+📘 **Key Concepts & Features** — Bullet points listing the main ideas, functions, or technical points.
+
+🎯 **Takeaways / Insights** — Bullet points summarizing why this content is important or useful.
+
+Keep it concise and academic. Use clear bullet points (•) and avoid long paragraphs.
+Content:
+${textContent}
+`,
+
 
                 },
               ],
