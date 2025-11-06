@@ -562,11 +562,92 @@ function initUpload() {
     }
   });
 
-  // --- Placeholder: Generate Quiz logic will go here ---
-  quizBtn?.addEventListener("click", () => {
-    if (!uploadedFile) return alert("Please upload a valid file first.");
-    alert("🧠 Quiz generation feature coming next!");
-  });
+  // 🧠 Generate quiz
+quizBtn.addEventListener("click", async () => {
+  if (!uploadedFile) return alert("Please upload a valid file first.");
+
+  summaryBox.classList.add("hidden"); // hide summary
+  const quizSection = document.getElementById("quizSection");
+  const quizContainer = document.getElementById("quizContainer");
+  const submitQuizBtn = document.getElementById("submitQuizBtn");
+  const quizResultModal = document.getElementById("quizResultModal");
+  const quizResultText = document.getElementById("quizResultText");
+  const seeAnswersBtn = document.getElementById("seeAnswersBtn");
+  const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+  quizSection.classList.remove("hidden");
+  quizContainer.innerHTML = "Generating quiz questions...";
+
+  try {
+    const formData = new FormData();
+    formData.append("file", uploadedFile);
+
+    const res = await fetch("https://studybuddy-new-tau.vercel.app/api/quiz", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) throw new Error("Failed to generate quiz");
+    const data = await res.json();
+
+    // Render quiz
+    quizContainer.innerHTML = "";
+    data.questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.classList.add("quiz-question");
+      div.innerHTML = `
+        <p><strong>Q${i + 1}:</strong> ${q.question}</p>
+        ${q.options
+          .map(
+            (opt, j) =>
+              `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label><br>`
+          )
+          .join("")}
+      `;
+      quizContainer.appendChild(div);
+    });
+
+    // Quiz submission
+    submitQuizBtn.onclick = () => {
+      let correct = 0;
+      data.questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && selected.value === q.answer) correct++;
+      });
+
+      const total = data.questions.length;
+      const score = Math.round((correct / total) * 100);
+      quizResultText.innerHTML = `You got <strong>${correct}</strong> out of <strong>${total}</strong> correct!<br>Score: <strong>${score}%</strong>`;
+      quizResultModal.classList.remove("hidden");
+
+      // See answers
+      seeAnswersBtn.onclick = () => {
+        quizResultModal.classList.add("hidden");
+        quizContainer.querySelectorAll(".quiz-question").forEach((div, i) => {
+          const correctAns = document.createElement("p");
+          correctAns.classList.add("answer");
+          correctAns.textContent = `✅ Correct answer: ${data.questions[i].answer}`;
+          div.appendChild(correctAns);
+        });
+      };
+
+      // Try again
+      tryAgainBtn.onclick = () => {
+        quizResultModal.classList.add("hidden");
+        document
+          .querySelectorAll("input[type='radio']")
+          .forEach((el) => (el.checked = false));
+        document
+          .querySelectorAll(".answer")
+          .forEach((el) => el.remove());
+      };
+    };
+  } catch (e) {
+    console.error(e);
+    quizContainer.innerHTML = "⚠️ Failed to generate quiz questions.";
+  }
+});
+
 
   // --- Clear all ---
   clearBtn.addEventListener("click", () => {
