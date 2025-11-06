@@ -19,50 +19,59 @@
       <p class="muted">Upload your study notes to generate a smart AI-powered summary. </p>
     </section>
 
-      <!-- Upload Card -->
-  <section class="upload-card" id="uploadCard">
-    <div id="uploadZone" class="upload-zone">
-      <p>Drag & drop your file here<br><span>or click to upload</span></p>
-    </div>
-  
-    <!-- move input OUTSIDE uploadZone -->
-    <input type="file" id="fileInput" style="display:none">
-  
-    <div id="warningBox" class="warning hidden">
-      ⚠️ This file type is unverified. The generated summary might be inaccurate.
-    </div>
-  
-    <div class="actions">
-      <button class="btn blue" id="generateBtn" disabled>✨ Generate Summary</button>
-      <button class="btn outline" id="clearBtn">Clear</button>
-    </div>
-    <div class="actions">
-  <button class="btn blue" id="generateBtn" disabled>✨ Generate Summary</button>
-  <button class="btn green" id="quizBtn" disabled>🧠 Generate Quiz</button>
-  <button class="btn outline" id="clearBtn">Clear</button>
-</div>
+     <!-- Upload Card -->
+<section class="upload-card" id="uploadCard">
+  <div id="uploadZone" class="upload-zone">
+    <p>Drag & drop your file here<br><span>or click to upload</span></p>
+  </div>
 
-<!-- Quiz output -->
-<div id="quizSection" class="hidden">
-  <h3>🧠 Practice Quiz</h3>
-  <div id="quizContainer"></div>
-  <button class="btn blue" id="submitQuizBtn">Submit Quiz</button>
-</div>
+  <!-- Hidden input -->
+  <input type="file" id="fileInput" style="display:none">
 
-<!-- Quiz Result Popup -->
-<div id="quizResultModal" class="modal hidden">
-  <div class="modal__overlay"></div>
-  <div class="modal__content">
-    <h2>📊 Your Results</h2>
-    <p id="quizResultText"></p>
-    <div class="modal__actions">
-      <button class="btn outline" id="seeAnswersBtn">See Answers</button>
-      <button class="btn green" id="tryAgainBtn">Try Again</button>
+  <!-- Always-visible red warning -->
+  <p class="unverified-warning">
+    ⚠️ If you upload <strong>unverified content</strong>, the generated summary and quiz may be inaccurate.
+  </p>
+
+  <!-- Button Row -->
+  <div class="actions">
+    <button class="btn blue" id="generateBtn" disabled>✨ Generate Summary</button>
+    <button class="btn green" id="quizBtn" disabled>🧠 Generate Quiz</button>
+    <button class="btn outline" id="clearBtn">Clear</button>
+  </div>
+
+  <!-- Yellow dynamic warning box -->
+  <div id="warningBox" class="warning hidden">
+    ⚠️ This file type is unverified. The generated summary might be inaccurate.
+  </div>
+
+  <!-- Summary Output -->
+  <div id="summaryOutput" class="summary hidden">
+    <h3>📘 AI Summary Preview</h3>
+    <p id="summaryText">Processing your file... please wait.</p>
+  </div>
+
+  <!-- Quiz output -->
+  <div id="quizSection" class="hidden">
+    <h3>🧠 Practice Quiz</h3>
+    <div id="quizContainer"></div>
+    <button class="btn blue" id="submitQuizBtn">Submit Quiz</button>
+  </div>
+
+  <!-- Quiz Result Popup -->
+  <div id="quizResultModal" class="modal hidden">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+      <h2>📊 Your Results</h2>
+      <p id="quizResultText"></p>
+      <div class="modal__actions">
+        <button class="btn outline" id="seeAnswersBtn">See Answers</button>
+        <button class="btn green" id="tryAgainBtn">Try Again</button>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-  
     <!-- Mock Summary Output -->
     <div id="summaryOutput" class="summary hidden">
       <h3>📘 AI Summary Preview</h3>
