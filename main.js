@@ -552,7 +552,7 @@ generateBtn.addEventListener("click", async () => {
     const formData = new FormData();
     formData.append("file", uploadedFile);
 
-    const res = await fetch("https://study-buddy-new-tau.vercel.app/api/summary", {
+    const res = await fetch("https://studybuddy-new-tau.vercel.app/api/summary", {
   method: "POST",
   body: formData
 });
