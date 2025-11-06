@@ -36,6 +36,32 @@
       <button class="btn blue" id="generateBtn" disabled>✨ Generate Summary</button>
       <button class="btn outline" id="clearBtn">Clear</button>
     </div>
+    <div class="actions">
+  <button class="btn blue" id="generateBtn" disabled>✨ Generate Summary</button>
+  <button class="btn green" id="quizBtn" disabled>🧠 Generate Quiz</button>
+  <button class="btn outline" id="clearBtn">Clear</button>
+</div>
+
+<!-- Quiz output -->
+<div id="quizSection" class="hidden">
+  <h3>🧠 Practice Quiz</h3>
+  <div id="quizContainer"></div>
+  <button class="btn blue" id="submitQuizBtn">Submit Quiz</button>
+</div>
+
+<!-- Quiz Result Popup -->
+<div id="quizResultModal" class="modal hidden">
+  <div class="modal__overlay"></div>
+  <div class="modal__content">
+    <h2>📊 Your Results</h2>
+    <p id="quizResultText"></p>
+    <div class="modal__actions">
+      <button class="btn outline" id="seeAnswersBtn">See Answers</button>
+      <button class="btn green" id="tryAgainBtn">Try Again</button>
+    </div>
+  </div>
+</div>
+
   
     <!-- Mock Summary Output -->
     <div id="summaryOutput" class="summary hidden">
