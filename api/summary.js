@@ -5,6 +5,8 @@ import pdfParse from "pdf-parse";
 import mammoth from "mammoth";
 import officeParser from "officeparser"; // ✅ Handles PPTX + DOCX
 import fetch from "node-fetch";
+import JSZip from "jszip";
+import { parseStringPromise } from "xml2js";
 
 // Disable Next.js body parsing
 export const config = { api: { bodyParser: false } };
@@ -34,18 +36,50 @@ export default async function handler(req, res) {
       textContent = data.text;
     }
 
-    else if (ext === "docx" || ext === "pptx") {
+  // DOCX / PPTX Extraction
+else if (ext === "docx" || ext === "pptx") {
   try {
-    let text = await officeParser.parseOfficeAsync(filePath);
-    // Fallback to mammoth if OfficeParser fails or returns empty
-    if (!text || text.trim().length < 50) {
-      console.log("⚠️ OfficeParser returned empty, retrying with Mammoth...");
-      const mammothResult = await mammoth.extractRawText({ path: filePath });
-      text = mammothResult.value;
+    let text = "";
+
+    // 1️⃣ Try officeparser first
+    try {
+      text = await officeParser.parseOfficeAsync(filePath);
+    } catch (e) {
+      console.warn("officeparser failed:", e.message);
     }
+
+    // 2️⃣ Fallback: Mammoth for DOCX
+    if ((!text || text.trim().length < 50) && ext === "docx") {
+      try {
+        const mammothResult = await mammoth.extractRawText({ path: filePath });
+        text = mammothResult.value;
+      } catch (e) {
+        console.warn("mammoth failed:", e.message);
+      }
+    }
+
+    // 3️⃣ Final fallback: Direct unzip + XML read (guaranteed)
+    if (!text || text.trim().length < 50) {
+      console.log("🧩 Using JSZip fallback for DOCX text extraction...");
+      const buffer = await fs.promises.readFile(filePath);
+      const zip = await JSZip.loadAsync(buffer);
+      let combinedText = "";
+
+      for (const fileName of Object.keys(zip.files)) {
+        if (fileName.endsWith(".xml") && fileName.includes("word/")) {
+          const xmlContent = await zip.files[fileName].async("string");
+          const parsed = await parseStringPromise(xmlContent);
+          combinedText += JSON.stringify(parsed);
+        }
+      }
+
+      // Strip XML tags & compress whitespace
+      text = combinedText.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").slice(0, 100000);
+    }
+
     textContent = text;
   } catch (err) {
-    console.error("OfficeParser/Mammoth error:", err);
+    console.error("DOCX extraction error:", err);
     textContent = "";
   }
 }
