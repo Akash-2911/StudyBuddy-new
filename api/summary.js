@@ -20,15 +20,33 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Missing 'content' (string)" });
     }
 
-    // TEMP demo output (replace with real call in 2B)
-    const summary = `Auto-summary of "${filename}": ${content.slice(0, 240)}...`;
-    return res.status(200).json({ ok: true, summary });
-  } catch (err) {
-    console.error("Proxy error:", err);
-    return res.status(500).json({ error: "Upstream error" });
+    // --- REAL GEMINI EXAMPLE (text-only payload) ---
+const key = process.env.GEMINI_API_KEY;
+
+// Gemini "generateContent" (v1beta 1.5-flash example). Adjust model or endpoint if needed.
+const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+
+const prompt = [
+  {
+    role: "user",
+    parts: [{ text: `Summarize this study material clearly and concisely:\n\n${content}` }]
   }
+];
+
+const aiRes = await fetch(url, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ contents: prompt })
+});
+
+if (!aiRes.ok) {
+  const e = await aiRes.text();
+  throw new Error(`Gemini error: ${e}`);
 }
 
-export const config = {
-  api: { bodyParser: { sizeLimit: "5mb" } }
-};
+const aiJson = await aiRes.json();
+// Extract the text (Gemini returns candidates -> content -> parts -> text)
+const text =
+  aiJson?.candidates?.[0]?.content?.parts?.[0]?.text ||
+  "No summary text returned.";
+return res.status(200).json({ ok: true, summary: text });
