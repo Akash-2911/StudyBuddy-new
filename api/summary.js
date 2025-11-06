@@ -3,26 +3,22 @@ import formidable from "formidable";
 import fs from "fs";
 import pdfParse from "pdf-parse";
 import { readFileSync } from "fs";
-import { convertToHtml } from "mammoth"; // for DOCX
-import pptxParser from "pptx-parser";   // lightweight pptx parser
+import { convertToHtml } from "mammoth";
+import pptxParser from "pptx-parser";
 
 export const config = {
-  api: {
-    bodyParser: false // disable default so we can parse multipart
-  }
+  api: { bodyParser: false } // allow multipart/form-data
 };
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Use POST" });
 
   const form = formidable({ multiples: false });
   const [fields, files] = await form.parse(req);
-
   const file = files.file?.[0] || files.file;
   if (!file) return res.status(400).json({ error: "No file uploaded" });
 
@@ -40,7 +36,6 @@ export default async function handler(req, res) {
       textContent = data.text;
     } else if (ext === "docx") {
       const data = await convertToHtml({ path: filePath });
-      // convert HTML to plain text
       textContent = data.value.replace(/<[^>]+>/g, " ");
     } else if (ext === "pptx") {
       const slides = await pptxParser.parse(filePath);
@@ -53,35 +48,47 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "No readable text found in file" });
     }
 
-    // ==== Send to Gemini ====
+    // ---- Gemini 2.0 Flash Call (real) ----
     const key = process.env.GEMINI_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+    const url =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" +
+      key;
 
-    const prompt = [
-      {
-        role: "user",
-        parts: [{ text: `Summarize this file in a clear, concise way:\n\n${textContent.slice(0, 15000)}` }]
-      }
-    ];
+    const body = {
+      contents: [
+        {
+          parts: [
+            {
+              text: `Summarize this document clearly and accurately:\n\n${textContent}`
+            }
+          ]
+        }
+      ]
+    };
 
     const aiRes = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contents: prompt })
+      body: JSON.stringify(body)
     });
 
-    if (!aiRes.ok) throw new Error(await aiRes.text());
+    if (!aiRes.ok) {
+      const errText = await aiRes.text();
+      throw new Error("Gemini API error: " + errText);
+    }
+
     const aiJson = await aiRes.json();
     const summary =
       aiJson?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "No summary returned.";
+      "No summary text returned.";
 
     return res.status(200).json({ ok: true, summary });
   } catch (err) {
     console.error("Error:", err);
-    return res.status(500).json({ error: "Failed to summarize file." });
+    return res
+      .status(500)
+      .json({ error: "Failed to summarize file", detail: String(err) });
   } finally {
-    // cleanup tmp file
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
   }
 }
