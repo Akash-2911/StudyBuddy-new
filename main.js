@@ -542,19 +542,48 @@ fileInput.addEventListener("change", (e) => {
     handleFileSelect(file);
   });
 
-  // Generate summary (mock)
-  generateBtn.addEventListener("click", () => {
-    if (!uploadedFile) return alert("Please upload a valid file first.");
-    summaryBox.classList.remove("hidden");
-    summaryText.textContent = "Processing your file... please wait.";
-    setTimeout(() => {
+  // Generate summary (real via /api/summary)
+generateBtn.addEventListener("click", async () => {
+  if (!uploadedFile) return alert("Please upload a valid file first.");
+  summaryBox.classList.remove("hidden");
+  summaryText.textContent = "Processing with AI…";
+
+  try {
+    // For now we support text-like files (txt, md, csv, json, code, etc.)
+    const text = await uploadedFile.text().catch(() => "");
+    if (!text) {
       summaryText.innerHTML = `
-        <p>✨ <strong>Summary:</strong> The uploaded document discusses key learning materials and insights from your notes.</p>
-        <p>⚡ Highlight: The system identifies the main concepts, simplifying complex terms for faster study.</p>
-        <p>🧠 Tip: Verify your content source for more accurate AI summaries.</p>
+        ⚠️ This file type can't be read as text in the browser.
+        For the demo, please upload a text-like file (txt/md/csv).<br/>
+        (Later we can add PDF/DOCX support via server-side parsing.)
       `;
-    }, 1500);
-  });
+      return;
+    }
+
+    const res = await fetch("/api/summary", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        filename: uploadedFile.name,
+        content: text
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || "Proxy error");
+    }
+
+    const data = await res.json();
+    summaryText.innerHTML = `
+      <p>✨ <strong>Summary:</strong> ${data.summary}</p>
+      <p class="muted">Tip: Later we’ll send PDFs/DOCX via server and parse them there for better accuracy.</p>
+    `;
+  } catch (e) {
+    console.error(e);
+    summaryText.textContent = "⚠️ Error generating summary. Please try again.";
+  }
+});
 
   // Clear
   clearBtn.addEventListener("click", () => {
