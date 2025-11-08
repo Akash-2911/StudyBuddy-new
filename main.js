@@ -598,20 +598,26 @@ submitQuizBtn.classList.add("disabled");
 submitQuizBtn.classList.remove("disabled");
 
     quizContainer.innerHTML = "";
-    data.questions.forEach((q, i) => {
-      const div = document.createElement("div");
-      div.classList.add("quiz-question");
-      div.innerHTML = `
-        <p><strong>Q${i + 1}:</strong> ${q.question}</p>
-        ${q.options
-          .map(
-            (opt, j) =>
-              `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label><br>`
-          )
-          .join("")}
-      `;
-      quizContainer.appendChild(div);
-    });
+  data.questions.forEach((q, i) => {
+  const div = document.createElement("div");
+  div.classList.add("quiz-question");
+
+  // Fallback to "Option A/B/C/D" if text missing
+  const options = q.options && q.options.length
+    ? q.options
+    : ["Option A", "Option B", "Option C", "Option D"];
+
+  div.innerHTML = `
+    <p><strong>Q${i + 1}:</strong> ${q.question || "(Question missing)"}</p>
+    ${options
+      .map(
+        (opt, j) =>
+          `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label><br>`
+      )
+      .join("")}
+  `;
+  quizContainer.appendChild(div);
+});
 
     // Quiz submission
     submitQuizBtn.onclick = () => {
