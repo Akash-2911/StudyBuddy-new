@@ -41,18 +41,23 @@ export default async function handler(req, res) {
     if (!text.trim())
       return res.status(400).json({ error: "Empty or unreadable file" });
 
-    const prompt = `
-Generate 5 short, clear multiple-choice quiz questions from the text below.
-Each question must be in JSON format with fields:
+   const prompt = `
+Generate 5 short, clear multiple-choice quiz questions (MCQs) from the text below.
+Each question must include:
+- "question": full question text
+- "options": an array of 4 complete answer choices (not just "A/B/C/D", but actual words)
+- "answer": the correct option text (it must match one of the 4 options exactly)
+Return ONLY a valid JSON array in this exact format:
+
 [
   {
-    "question": "string",
-    "options": ["A", "B", "C", "D"],
-    "answer": "one correct option text"
+    "question": "What is the main idea of Study Buddy?",
+    "options": ["An AI-powered study app", "A video streaming platform", "A banking service", "A social network"],
+    "answer": "An AI-powered study app"
   }
 ]
-Only return valid JSON — no explanations or extra text.
 
+Do NOT include any text before or after the JSON.
 Text:
 ${text.slice(0, 8000)}
 `;
