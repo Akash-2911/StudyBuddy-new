@@ -680,6 +680,7 @@ submitQuizBtn.classList.remove("disabled");
   if (quizContainer) quizContainer.innerHTML = "";
   if (quizResultModal) quizResultModal.classList.add("hidden");
 });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const page = document.documentElement.getAttribute("data-page");
