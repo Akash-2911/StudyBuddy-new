@@ -661,17 +661,25 @@ submitQuizBtn.classList.remove("disabled");
 });
 
 
-  // --- Clear all ---
-  clearBtn.addEventListener("click", () => {
-    fileInput.value = "";
-    uploadedFile = null;
-    fileInfo.classList.add("hidden");
-    warningBox.classList.add("hidden");
-    summaryBox.classList.add("hidden");
-    generateBtn.disabled = true;
-    quizBtn.disabled = true;
-  });
-}
+ clearBtn.addEventListener("click", () => {
+  // reset file
+  fileInput.value = "";
+  uploadedFile = null;
+  fileInfo.classList.add("hidden");
+  warningBox.classList.add("hidden");
+  summaryBox.classList.add("hidden");
+  generateBtn.disabled = true;
+  quizBtn.disabled = true;
+
+  // clear quiz section too
+  const quizSection = document.getElementById("quizSection");
+  const quizContainer = document.getElementById("quizContainer");
+  const quizResultModal = document.getElementById("quizResultModal");
+
+  if (quizSection) quizSection.classList.add("hidden");
+  if (quizContainer) quizContainer.innerHTML = "";
+  if (quizResultModal) quizResultModal.classList.add("hidden");
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const page = document.documentElement.getAttribute("data-page");
